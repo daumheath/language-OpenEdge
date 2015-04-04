@@ -1,0 +1,10 @@
+{
+  "name": "language-OpenEdge",
+  "version": "0.1.0",
+  "description": "OpenEdge language support in Atom",
+  "engines": {
+    "atom": "*",
+    "node": "*"
+  },
+  "license": "MIT"
+}

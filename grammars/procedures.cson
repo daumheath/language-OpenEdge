@@ -1,0 +1,14 @@
+'name': 'OpenEdge'
+'scopeName': 'source.OpenEdge'
+'fileTypes': [
+  'p'
+  'w'
+  'i'
+  'cls'
+]
+'patterns' [
+  {
+    'match': '{[\s\w]*}'
+    'name': 'string.interpolated.oe'
+  }
+]
