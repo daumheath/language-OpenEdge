@@ -6,9 +6,9 @@
   'i'
   'cls'
 ]
-'patterns' [
+'patterns': [
   {
-    'match': '{[\s\w]*}'
+    'match': '\{[\\s\\w]*\}'
     'name': 'string.interpolated.oe'
   }
 ]
