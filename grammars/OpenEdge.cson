@@ -1,0 +1,44 @@
+'scopeName': 'source.openedge'
+'name': 'OpenEdge'
+'fileTypes': [
+    'p'
+    'w'
+    'cls'
+    'i'
+]
+'patterns': [
+    {
+        'captures':
+            '1':
+                'name': 'keyword.other.define.oe'
+            '2':
+                'name': 'variable.other.oe'
+        'match': '\\b(?i:(DEF(?:INE)?\\s*(?i:(?:input(?:\\-output)?|output)?\\s*[\\w_\\-\\d]*))\\s*([\\w_\\-]*))'
+    }
+    {
+        'match': '\\b(?i:no-undo)\\b'
+        'name': 'keyword.other'
+    }
+    {
+        'begin': '/\\*'
+        'end': '\\*/'
+        'name': 'comment.block'
+    }
+    {
+        'match': '\{&[\\w_\-]+\}'
+        'name': 'string.interpolated.preprocessor.oe'
+    }
+    {
+        'begin': '\{(?!&)'
+        'end': '\}'
+        'name': 'string.interpolated.include.oe'
+    }
+    {
+        'captures':
+            '1':
+                'name': 'keyword.other.preprocessor.oe'
+            '2':
+                'name': 'variable.other.preprocessor.oe'
+        'match': '^\\s*&(?i:(analyze-suspend|analyze-resume|scoped-define|global-define))\\s*([\\w_\-]*)'
+    }
+]
