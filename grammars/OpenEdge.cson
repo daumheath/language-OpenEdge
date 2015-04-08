@@ -11,16 +11,26 @@
       'include': '#strings'
     }
     {
-        'captures':
-            '1':
-                'name': 'keyword.other.define.oe'
-            '2':
-                'name': 'variable.other.oe'
-        'match': '\\b(?i:(DEF(?:INE)?\\s*(?i:(?:input(?:\\-output)?|output)?\\s*[\\w_\\-\\d]*))\\s*([\\w_\\-]*))'
-    }
-    {
-        'match': '\\b(?i:no-undo)\\b'
-        'name': 'keyword.other'
+        'begin': '\\b(?i:(def(?:ine)?))\\s'
+        'end': '\\.'
+        'name': 'meta.keyword.other.define.oe'
+        'patterns': [
+            {
+                'include': '#strings'
+            }
+            {
+                'include': '#numbers'
+            }
+            {
+                'include': '#modifiers'
+            }
+            {
+                'match': '\\b(?i:(as))\\s*([\\w\\d_\\-]*)'
+                'captures':
+                    '2':
+                        'name': 'storage.type'
+            }
+        ]
     }
     {
         'begin': '/\\*'
@@ -50,11 +60,7 @@
       'patterns': [
         {
           'begin': '"'
-          'beginCaptures':
-            '0': 'punctuation.definition.string.begin.oe'
           'end': '"'
-          'endCaptures':
-            '0': 'punctuation.definition.string.end.oe'
           'name': 'string.quoted.double.oe'
           'patterns': [
             {
@@ -65,11 +71,7 @@
         }
         {
           'begin': '\''
-          'beginCaptures':
-            '1': 'punctuation.definition.string.begin.oe'
           'end': '\''
-          'endCaptures':
-            '1': 'punctuation.definition.string.end.oe'
           'name': 'string.quoted.single.oe'
           'patterns': [
             {
@@ -79,3 +81,17 @@
           ]
         }
       ]
+    'numbers':
+        'patterns': [
+            {
+                'match': '\\s\\.?[\\d\\.]*\\d\\b'
+                'name': 'constant.numeric.oe'
+            }
+        ]
+    'modifiers':
+        'patterns': [
+            {
+                'match': '\\b(static|private|public|protected|global|shared|new|final|abstract)\\b'
+                'name': 'storage.modifier'
+            }
+        ]
