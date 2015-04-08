@@ -11,7 +11,7 @@
       'include': '#strings'
     }
     {
-        'begin': '\\b(?i:(def(?:ine)?))\\s'
+        'begin': '\\b(?i:(def(?:ine)?\\svar(?:iable)))\\s*'
         'end': '\\.'
         'name': 'meta.keyword.other.define.oe'
         'patterns': [
@@ -25,10 +25,12 @@
                 'include': '#modifiers'
             }
             {
-                'match': '\\b(?i:(as))\\s*([\\w\\d_\\-]*)'
+                'match': '\\b([\\w\\d_\-]*)\\s*(?i:(as))\\s*([\\w\\d_\\-]*)'
                 'captures':
-                    '2':
-                        'name': 'storage.type'
+                    '1':
+                        'name': 'variable.other.oe'
+                    '3':
+                        'name': 'storage.type.oe'
             }
         ]
     }
