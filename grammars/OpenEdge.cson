@@ -11,7 +11,7 @@
       'include': '#strings'
     }
     {
-        'begin': '\\b(?i:(def(?:ine)?\\svar(?:iable)))\\s*'
+        'begin': '\\b(?i:(def(?:ine)))?\\s*'
         'end': '\\.'
         'name': 'meta.keyword.other.define.oe'
         'patterns': [
@@ -94,6 +94,6 @@
         'patterns': [
             {
                 'match': '\\b(static|private|public|protected|global|shared|new|final|abstract)\\b'
-                'name': 'storage.modifier'
+                'name': 'storage.modifier.oe'
             }
         ]
