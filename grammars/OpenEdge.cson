@@ -11,8 +11,11 @@
         'include': '#strings'
     }
     {
+        'include': '#forLoops'
+    }
+    {
         'begin': '^\\s*(?i:(def(?:ine)))\\s*'
-        'end': '\\.'
+        'end': '\\.\\s'
         'name': 'meta.keyword.other.define.oe'
         'patterns': [
             {
@@ -37,15 +40,18 @@
     {
         'begin': '/\\*'
         'end': '\\*/'
-        'name': 'comment.block'
+        'name': 'comment.block.oe'
     }
     {
-        'include': '#preprocvar'
+        'include': '#preProcVar'
     }
     {
         'begin': '\{(?!&)'
         'end': '\}'
         'name': 'string.interpolated.include.oe'
+    }
+    {
+        'include': '#oeConstants'
     }
 ]
 'repository':
@@ -61,7 +67,7 @@
               'name': 'constant.character.escape.oe'
             }
             {
-                'include': '#preprocvar'
+                'include': '#preProcVar'
             }
           ]
         }
@@ -75,7 +81,10 @@
               'name': 'constant.character.escape.oe'
             }
             {
-                'include': '#preprocvar'
+                'include': '#preProcVar'
+            }
+            {
+                'include': '#oeConstants'
             }
           ]
         }
@@ -94,10 +103,32 @@
                 'name': 'storage.modifier.oe'
             }
         ]
-    'preprocvar':
+    'preProcVar':
         'patterns': [
             {
                 'match': '\{&[\\w_\-]+\}'
                 'name': 'constant.other.preprocessor.oe'
+            }
+        ]
+    'oeConstants':
+        'patterns': [
+            {
+                'match': '(?:[^\\w-])(?i:(yes|no|true|false))(?:[^\\w-])'
+                'captures':
+                    '1':
+                        'name': 'constant.language.oe'
+            }
+        ]
+    'forLoops':
+        'patterns': [
+            {
+                'begin': '^(?:\\s*)\\b(?i:(for))\\b'
+                'end': '\\b(?i:end)\\b'
+                'name': 'entity.name.section.forloop.oe'
+                'patterns': [
+                    {
+                        'include': '#forLoops'
+                    }
+                ]
             }
         ]
