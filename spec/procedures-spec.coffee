@@ -1,44 +1,69 @@
 {TextEditor} = require 'atom'
 
 describe "OpenEdge procedures grammer", ->
-  grammar = null
+    grammar = null
 
-  beforeEach ->
-    waitsForPromise ->
-      atom.packages.activatePackage("language-OpenEdge")
+    beforeEach ->
+        waitsForPromise ->
+            atom.packages.activatePackage("language-OpenEdge")
 
-    runs ->
-      grammar = atom.grammars.grammarForScopeName("source.openedge")
+        runs ->
+            grammar = atom.grammars.grammarForScopeName("source.openedge")
 
-  it "parses the grammar", ->
-    expect(grammar).toBeTruthy()
-    expect(grammar.scopeName).toBe "source.openedge"
+    it "parses the grammar", ->
+        expect(grammar).toBeTruthy()
+        expect(grammar.scopeName).toBe "source.openedge"
 
-  describe "strings", ->
-    it "tokenizes single-line strings", ->
-      delimsByScope =
-        "string.quoted.double.oe": '"'
-        "string.quoted.single.oe": "'"
+    describe "preprocessors", ->
+        it "tokenizes include references", ->
+            sample = "{include.i}"
+            {tokens} = grammar.tokenizeLine(sample)
+            expect(tokens.length).toEqual 3
+            expect(tokens[0].value).toEqual "{"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "string.interpolated.include.oe"]
+            expect(tokens[1].value).toEqual "include.i"
+            expect(tokens[1].scopes).toEqual ["source.openedge", "string.interpolated.include.oe"]
+            expect(tokens[2].value).toEqual "}"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "string.interpolated.include.oe"]
 
-      for scope, delim of delimsByScope
-        {tokens} = grammar.tokenizeLine(delim + "x" + delim)
-        expect(tokens.length).toEqual 3
-        expect(tokens[0].value).toEqual delim
-        expect(tokens[0].scopes).toEqual ["source.openedge", scope]
-        expect(tokens[1].value).toEqual "x"
-        expect(tokens[1].scopes).toEqual ["source.openedge", scope]
-        expect(tokens[2].value).toEqual delim
-        expect(tokens[2].scopes).toEqual ["source.openedge", scope]
+        it "tokenizes preprocessor variable reference", ->
+            sample = "{&CONST}"
+            {tokens} = grammar.tokenizeLine(sample)
+            expect(tokens.length).toEqual 1
+            expect(tokens[0].value).toEqual sample
+            expect(tokens[0].scopes).toEqual ["source.openedge", "constant.other.preprocessor.oe"]
 
-      {tokens} = grammar.tokenizeLine("'x~n'")
-      expect(tokens.length).toEqual 4
-      expect(tokens[2].value).toEqual "~n"
-      expect(tokens[2].scopes).toEqual ["source.openedge", "string.quoted.single.oe", "constant.character.escape.oe"]
+    describe "strings", ->
+        delimsByScope =
+            "string.quoted.double.oe": '"'
+            "string.quoted.single.oe": "'"
 
-      {tokens} = grammar.tokenizeLine('"x~n"')
-      expect(tokens.length).toEqual 4
-      expect(tokens[2].value).toEqual "~n"
-      expect(tokens[2].scopes).toEqual ["source.openedge", "string.quoted.double.oe", "constant.character.escape.oe"]
+        it "tokenizes single-line strings", ->
+            for scope, delim of delimsByScope
+                {tokens} = grammar.tokenizeLine(delim + "x" + delim)
+                expect(tokens.length).toEqual 3
+                expect(tokens[0].value).toEqual delim
+                expect(tokens[0].scopes).toEqual ["source.openedge", scope]
+                expect(tokens[1].value).toEqual "x"
+                expect(tokens[1].scopes).toEqual ["source.openedge", scope]
+                expect(tokens[2].value).toEqual delim
+                expect(tokens[2].scopes).toEqual ["source.openedge", scope]
+
+        it "tokenizes a string with an escape in it", ->
+            for scope, delim of delimsByScope
+                {tokens} = grammar.tokenizeLine(delim + "x~n" + delim)
+                expect(tokens.length).toEqual 4
+                expect(tokens[2].value).toEqual "~n"
+                expect(tokens[2].scopes).toEqual ["source.openedge", scope, "constant.character.escape.oe"]
+
+        it "tokenizes a string with a preprocessor variable in it", ->
+            for scope, delim of delimsByScope
+                {tokens} = grammar.tokenizeLine(delim + "x{&VAR}" + delim)
+                expect(tokens.length).toEqual 4
+                expect(tokens[0].value).toEqual delim
+                expect(tokens[1].value).toEqual "x"
+                expect(tokens[2].value).toEqual "{&VAR}"
+                expect(tokens[2].scopes).toEqual ["source.openedge", scope, "constant.other.preprocessor.oe"]
 
     describe "define statements", ->
         it "parses single line define variable with no modifiers", ->

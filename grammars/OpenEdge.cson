@@ -8,10 +8,10 @@
 ]
 'patterns': [
     {
-      'include': '#strings'
+        'include': '#strings'
     }
     {
-        'begin': '\\b(?i:(def(?:ine)))?\\s*'
+        'begin': '^\\s*(?i:(def(?:ine)))\\s*'
         'end': '\\.'
         'name': 'meta.keyword.other.define.oe'
         'patterns': [
@@ -40,21 +40,12 @@
         'name': 'comment.block'
     }
     {
-        'match': '\{&[\\w_\-]+\}'
-        'name': 'string.interpolated.preprocessor.oe'
+        'include': '#preprocvar'
     }
     {
         'begin': '\{(?!&)'
         'end': '\}'
         'name': 'string.interpolated.include.oe'
-    }
-    {
-        'captures':
-            '1':
-                'name': 'keyword.other.preprocessor.oe'
-            '2':
-                'name': 'variable.other.preprocessor.oe'
-        'match': '^\\s*&(?i:(analyze-suspend|analyze-resume|scoped-define|global-define))\\s*([\\w_\-]*)'
     }
 ]
 'repository':
@@ -69,6 +60,9 @@
               'match': '\~.'
               'name': 'constant.character.escape.oe'
             }
+            {
+                'include': '#preprocvar'
+            }
           ]
         }
         {
@@ -79,6 +73,9 @@
             {
               'match': '\~.'
               'name': 'constant.character.escape.oe'
+            }
+            {
+                'include': '#preprocvar'
             }
           ]
         }
@@ -95,5 +92,12 @@
             {
                 'match': '\\b(static|private|public|protected|global|shared|new|final|abstract)\\b'
                 'name': 'storage.modifier.oe'
+            }
+        ]
+    'preprocvar':
+        'patterns': [
+            {
+                'match': '\{&[\\w_\-]+\}'
+                'name': 'constant.other.preprocessor.oe'
             }
         ]
