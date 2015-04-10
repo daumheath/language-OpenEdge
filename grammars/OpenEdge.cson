@@ -11,31 +11,13 @@
         'include': '#strings'
     }
     {
-        'include': '#forLoops'
+        'include': '#forStatement'
     }
     {
-        'begin': '^\\s*(?i:(def(?:ine)))\\s*'
-        'end': '\\.\\s'
-        'name': 'meta.keyword.other.define.oe'
-        'patterns': [
-            {
-                'include': '#strings'
-            }
-            {
-                'include': '#numbers'
-            }
-            {
-                'include': '#modifiers'
-            }
-            {
-                'match': '\\b([\\w\\d_\-]*)\\s*(?i:(as))\\s*([\\w\\d_\\-]*)'
-                'captures':
-                    '1':
-                        'name': 'variable.other.oe'
-                    '3':
-                        'name': 'storage.type.oe'
-            }
-        ]
+        'include': '#doStatement'
+    }
+    {
+        'include': '#defineStatements'
     }
     {
         'begin': '/\\*'
@@ -55,6 +37,36 @@
     }
 ]
 'repository':
+    'defineStatements':
+        'patterns': [
+            {
+                'begin': '^\\s*(?i:(def(?:ine)))\\s*'
+                'end': '\\.\\s'
+                'name': 'meta.keyword.other.define.oe'
+                'patterns': [
+                    {
+                        'include': '#strings'
+                    }
+                    {
+                        'include': '#numbers'
+                    }
+                    {
+                        'include': '#modifiers'
+                    }
+                    {
+                        'include': '#oeConstants'
+                    }
+                    {
+                        'match': '\\b([\\w\\d_\-]*)\\s*(?i:(as))\\s*([\\w\\d_\\-]*(?:\\.\\w*)*)'
+                        'captures':
+                            '1':
+                                'name': 'variable.other.oe'
+                            '3':
+                                'name': 'storage.type.oe'
+                    }
+                ]
+            }
+        ]
     'strings':
       'patterns': [
         {
@@ -119,15 +131,56 @@
                         'name': 'constant.language.oe'
             }
         ]
-    'forLoops':
+    'forStatement':
         'patterns': [
             {
-                'begin': '^(?:\\s*)\\b(?i:(for))\\b'
-                'end': '\\b(?i:end)\\b'
-                'name': 'entity.name.section.forloop.oe'
+                'begin': '^(?:\\s*\\b)(?i:(for))(?:[^\\w-])'
+                'end': '[\\.:]\\s*\$'
+                'name': 'keyword.other.for.oe'
                 'patterns': [
                     {
-                        'include': '#forLoops'
+                        'include': '#oeConstants'
+                    }
+                    {
+                        'include': '#numbers'
+                    }
+                    {
+                        'include': '#strings'
+                    }
+                    {
+                        'include': '#preProcVar'
+                    }
+                    {
+                        'match': '\\b(?i:each|first|last)\\s*([\\w-]*)\\b'
+                        'captures':
+                            '1':
+                                'name': 'storage.name.table.oe'
+                    }
+                    {
+                        'match': '\\b([\\w\\d-]+\\.[\\w\\d-]+)\\b'
+                        'name': 'storage.name.table.field.oe'
+                    }
+                ]
+            }
+        ]
+    'doStatement':
+        'patterns': [
+            {
+                'begin': '\\b(?i:do)\\b'
+                'end': '\\b[\\.:]'
+                'name': 'keyword.control.do.oe'
+                'patterns': [
+                    {
+                        'include': '#oeConstants'
+                    }
+                    {
+                        'include': '#numbers'
+                    }
+                    {
+                        'include': '#strings'
+                    }
+                    {
+                        'include': '#preProcVar'
                     }
                 ]
             }

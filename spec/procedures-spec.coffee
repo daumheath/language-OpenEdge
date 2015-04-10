@@ -142,14 +142,67 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[9].value).toEqual "."
             expect(tokens[9].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
 
-    describe "for loops", ->
-        it "parses basic for loop", ->
-            tokens = grammar.tokenizeLines """for each table:
-            end.
-            """
-            expect(tokens[0][0].value).toEqual "for"
-            expect(tokens[0][0].scopes).toEqual ["source.openedge", "entity.name.section.forloop.oe"]
-            expect(tokens[0][1].value).toEqual " each table:"
-            expect(tokens[0][1].scopes).toEqual ["source.openedge", "entity.name.section.forloop.oe"]
-            expect(tokens[1][0].value).toEqual "end"
-            expect(tokens[1][0].scopes).toEqual ["source.openedge", "entity.name.section.forloop.oe"]
+    describe "for statement", ->
+        it "parses basic for statement", ->
+            tokens = grammar.tokenizeLines """for each table
+                                                    where table.field = 1:
+                                                x = 1.
+                                            """
+            expect(tokens[0][0].value).toEqual "for "
+            expect(tokens[0][0].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[0][1].value).toEqual "each "
+            expect(tokens[0][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[0][2].value).toEqual "table"
+            expect(tokens[0][2].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.oe"]
+            expect(tokens[1][0].value.trim()).toEqual "where"
+            expect(tokens[1][0].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[1][1].value).toEqual "table.field"
+            expect(tokens[1][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
+            expect(tokens[1][2].value).toEqual " ="
+            expect(tokens[1][2].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[1][3].value).toEqual " 1"
+            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "constant.numeric.oe"]
+            expect(tokens[1][4].value).toEqual ":"
+            expect(tokens[1][4].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[2][0].scopes).toEqual ["source.openedge"]
+
+        it "parses multi-line for statement", ->
+            tokens = grammar.tokenizeLines """for each table no-lock
+                                                    where table.field = 1,
+                                                  each table2 exclusive-lock
+                                                    where table2.field = table.field:
+                                                x = 1.
+                                            """
+            expect(tokens[0][0].value).toEqual "for "
+            expect(tokens[0][0].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[0][1].value).toEqual "each "
+            expect(tokens[0][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[0][2].value).toEqual "table"
+            expect(tokens[0][2].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.oe"]
+            expect(tokens[0][3].value).toEqual " no-lock"
+            expect(tokens[0][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[1][0].value.trim()).toEqual "where"
+            expect(tokens[1][0].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[1][1].value).toEqual "table.field"
+            expect(tokens[1][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
+            expect(tokens[1][2].value).toEqual " ="
+            expect(tokens[1][2].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[1][3].value).toEqual " 1"
+            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "constant.numeric.oe"]
+            expect(tokens[2][1].value).toEqual "each "
+            expect(tokens[2][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[2][2].value).toEqual "table2"
+            expect(tokens[2][2].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.oe"]
+            expect(tokens[2][3].value).toEqual " exclusive-lock"
+            expect(tokens[2][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[3][0].value.trim()).toEqual "where"
+            expect(tokens[3][0].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[3][1].value).toEqual "table2.field"
+            expect(tokens[3][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
+            expect(tokens[3][2].value).toEqual " = "
+            expect(tokens[3][2].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[3][3].value).toEqual "table.field"
+            expect(tokens[3][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
+            expect(tokens[3][4].value).toEqual ":"
+            expect(tokens[3][4].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[4][0].scopes).toEqual ["source.openedge"]
