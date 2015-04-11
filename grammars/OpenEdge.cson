@@ -125,7 +125,7 @@
     'oeConstants':
         'patterns': [
             {
-                'match': '(?:[^\\w-])(?i:(yes|no|true|false))(?:[^\\w-])'
+                'match': '(?<=[^\\w-])(?i:(yes|no|true|false|\\?))(?=[^\\w-])'
                 'captures':
                     '1':
                         'name': 'constant.language.oe'

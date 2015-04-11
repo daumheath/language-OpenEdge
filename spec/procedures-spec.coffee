@@ -18,18 +18,26 @@ describe "OpenEdge procedures grammer", ->
         it "tokenizes language constants", ->
             sample = "setValues(1,yes)"
             {tokens} = grammar.tokenizeLine(sample)
-            expect(tokens[2].value).toEqual "yes"
-            expect(tokens[2].scopes).toEqual ["source.openedge", "constant.language.oe"]
+            expect(tokens[1].value).toEqual "yes"
+            expect(tokens[1].scopes).toEqual ["source.openedge", "constant.language.oe"]
 
             sample = "x = true."
             {tokens} = grammar.tokenizeLine(sample)
-            expect(tokens[2].value).toEqual "true"
-            expect(tokens[2].scopes).toEqual ["source.openedge", "constant.language.oe"]
+            expect(tokens[1].value).toEqual "true"
+            expect(tokens[1].scopes).toEqual ["source.openedge", "constant.language.oe"]
 
+            #Make sure it doesn't find anything in the statement below
             sample = "view-as alert-box buttons yes-no update vchoose"
             {tokens} = grammar.tokenizeLine(sample)
             expect(tokens[0].value).toEqual sample
             expect(tokens[0].scopes).toEqual ["source.openedge"]
+
+            sample = "xyz(yes,no)"
+            {tokens} = grammar.tokenizeLine(sample)
+            expect(tokens[1].value).toEqual "yes"
+            expect(tokens[1].scopes).toEqual ["source.openedge", "constant.language.oe"]
+            expect(tokens[3].value).toEqual "no"
+            expect(tokens[3].scopes).toEqual ["source.openedge", "constant.language.oe"]
 
     describe "comments", ->
         it "tokenizes single line comment", ->
