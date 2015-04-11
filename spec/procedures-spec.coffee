@@ -206,3 +206,15 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[3][4].value).toEqual ":"
             expect(tokens[3][4].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
             expect(tokens[4][0].scopes).toEqual ["source.openedge"]
+
+    describe "Language Functions", ->
+        it "parses language function statements", ->
+            {tokens} = grammar.tokenizeLine("int('')")
+            expect(tokens[0].value).toEqual "int("
+            expect(tokens[0].scopes).toEqual ["source.openedge", "support.function.oe"]
+            expect(tokens[1].value).toEqual "'"
+            expect(tokens[1].scopes).toEqual ["source.openedge", "string.quoted.single.oe"]
+            expect(tokens[2].value).toEqual "'"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "string.quoted.single.oe"]
+            expect(tokens[3].value).toEqual ")"
+            expect(tokens[3].scopes).toEqual ["source.openedge", "support.function.oe"]
