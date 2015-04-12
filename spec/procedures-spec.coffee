@@ -227,8 +227,8 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[3].value).toEqual ")"
             expect(tokens[3].scopes).toEqual ["source.openedge", "support.function.oe"]
 
-    describe "IF-THEN statement", ->
-        it "parses basic IT-THEN statement", ->
+    describe "IF statements", ->
+        it "parses basic IF-THEN statement", ->
             {tokens} = grammar.tokenizeLine "IF x = 1 then"
             expect(tokens[0].value).toEqual "IF"
             expect(tokens[0].scopes).toEqual ["source.openedge", "keyword.other.if.oe"]
@@ -236,3 +236,12 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[2].scopes).toEqual ["source.openedge", "constant.numeric.oe"]
             expect(tokens[4].value).toEqual "then"
             expect(tokens[4].scopes).toEqual ["source.openedge", "keyword.other.then.oe"]
+
+        it "parses basic IF-THEN-ELSE statement", ->
+            {tokens} = grammar.tokenizeLine "if x = 1 then 'hello' else 'not hello'"
+            expect(tokens[0].value).toEqual "if"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "keyword.other.if.oe"]
+            expect(tokens[4].value).toEqual "then"
+            expect(tokens[4].scopes).toEqual ["source.openedge", "keyword.other.then.oe"]
+            expect(tokens[10].value).toEqual "else"
+            expect(tokens[10].scopes).toEqual ["source.openedge", "keyword.other.else.oe"]

@@ -89,11 +89,24 @@
     'ifStatements':
         'patterns': [
             {
-                'include': '#ifThen'
+                'begin': '\\b(?i:if)\\b'
+                'beginCaptures':
+                    '0':
+                        'name': 'keyword.other.if.oe'
+                'end': '\\b(?i:else)\\b'
+                'endCaptures':
+                    '0':
+                        'name': 'keyword.other.else.oe'
+                'patterns': [
+                    {
+                        'include': '#parameterPatterns'
+                    }
+                    {
+                        'match': '\\b(?i:then)\\b'
+                        'name': 'keyword.other.then.oe'
+                    }
+                ]
             }
-        ]
-    'ifThen':
-        'patterns': [
             {
                 'begin': '\\b(?i:if)\\b'
                 'beginCaptures':
