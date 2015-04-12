@@ -104,7 +104,7 @@
     'numbers':
         'patterns': [
             {
-                'match': '\\s\\.?[\\d\\.]*\\d\\b'
+                'match': '\\W\\.?[\\d\\.]*\\d\\b'
                 'name': 'constant.numeric.oe'
             }
         ]
