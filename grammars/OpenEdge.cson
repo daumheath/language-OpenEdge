@@ -187,6 +187,13 @@
                 ]
             }
         ]
+    'mathOperators':
+        'patterns': [
+            {
+                'match': '(?<=\\s)[=+\\-\\*\\/](?=\\s)'
+                'name': 'keyword.operator.math.oe'
+            }
+        ]
     'parameterPatterns':
         'patterns': [
             {
@@ -206,6 +213,9 @@
             }
             {
                 'include': '#ifStatements'
+            }
+            {
+                'include': '#mathOperators'
             }
         ]
     'preProcVar':

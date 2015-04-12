@@ -150,8 +150,8 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[9].value).toEqual "."
             expect(tokens[9].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
 
-    describe "for statement", ->
-        it "parses basic for statement", ->
+    describe "FOR statement", ->
+        it "parses basic FOR statement", ->
             tokens = grammar.tokenizeLines """for each table
                                                     where table.field = 1:
                                                 x = 1.
@@ -166,12 +166,12 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[1][0].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
             expect(tokens[1][1].value).toEqual "table.field"
             expect(tokens[1][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
-            expect(tokens[1][2].value).toEqual " = "
-            expect(tokens[1][2].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
-            expect(tokens[1][3].value).toEqual "1"
-            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "constant.numeric.oe"]
-            expect(tokens[1][4].value).toEqual ":"
-            expect(tokens[1][4].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[1][3].value).toEqual "="
+            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "keyword.operator.math.oe"]
+            expect(tokens[1][5].value).toEqual "1"
+            expect(tokens[1][5].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "constant.numeric.oe"]
+            expect(tokens[1][6].value).toEqual ":"
+            expect(tokens[1][6].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
             expect(tokens[2][0].scopes).toEqual ["source.openedge"]
 
         it "parses multi-line for statement", ->
@@ -193,10 +193,10 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[1][0].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
             expect(tokens[1][1].value).toEqual "table.field"
             expect(tokens[1][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
-            expect(tokens[1][2].value).toEqual " = "
-            expect(tokens[1][2].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
-            expect(tokens[1][3].value).toEqual "1"
-            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "constant.numeric.oe"]
+            expect(tokens[1][3].value).toEqual "="
+            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "keyword.operator.math.oe"]
+            expect(tokens[1][5].value).toEqual "1"
+            expect(tokens[1][5].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "constant.numeric.oe"]
             expect(tokens[2][1].value).toEqual "each "
             expect(tokens[2][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
             expect(tokens[2][2].value).toEqual "table2"
@@ -207,12 +207,12 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[3][0].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
             expect(tokens[3][1].value).toEqual "table2.field"
             expect(tokens[3][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
-            expect(tokens[3][2].value).toEqual " = "
-            expect(tokens[3][2].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
-            expect(tokens[3][3].value).toEqual "table.field"
-            expect(tokens[3][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
-            expect(tokens[3][4].value).toEqual ":"
-            expect(tokens[3][4].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
+            expect(tokens[3][3].value).toEqual "="
+            expect(tokens[3][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "keyword.operator.math.oe"]
+            expect(tokens[3][5].value).toEqual "table.field"
+            expect(tokens[3][5].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
+            expect(tokens[3][6].value).toEqual ":"
+            expect(tokens[3][6].scopes).toEqual ["source.openedge", "keyword.other.for.oe"]
             expect(tokens[4][0].scopes).toEqual ["source.openedge"]
 
     describe "Language Functions", ->
@@ -232,16 +232,22 @@ describe "OpenEdge procedures grammer", ->
             {tokens} = grammar.tokenizeLine "IF x = 1 then"
             expect(tokens[0].value).toEqual "IF"
             expect(tokens[0].scopes).toEqual ["source.openedge", "keyword.other.if.oe"]
-            expect(tokens[2].value).toEqual "1"
-            expect(tokens[2].scopes).toEqual ["source.openedge", "constant.numeric.oe"]
-            expect(tokens[4].value).toEqual "then"
-            expect(tokens[4].scopes).toEqual ["source.openedge", "keyword.other.then.oe"]
+            expect(tokens[2].value).toEqual "="
+            expect(tokens[2].scopes).toEqual ["source.openedge", "keyword.operator.math.oe"]
+            expect(tokens[4].value).toEqual "1"
+            expect(tokens[4].scopes).toEqual ["source.openedge", "constant.numeric.oe"]
+            expect(tokens[6].value).toEqual "then"
+            expect(tokens[6].scopes).toEqual ["source.openedge", "keyword.other.then.oe"]
 
         it "parses basic IF-THEN-ELSE statement", ->
             {tokens} = grammar.tokenizeLine "if x = 1 then 'hello' else 'not hello'"
             expect(tokens[0].value).toEqual "if"
             expect(tokens[0].scopes).toEqual ["source.openedge", "keyword.other.if.oe"]
-            expect(tokens[4].value).toEqual "then"
-            expect(tokens[4].scopes).toEqual ["source.openedge", "keyword.other.then.oe"]
-            expect(tokens[10].value).toEqual "else"
-            expect(tokens[10].scopes).toEqual ["source.openedge", "keyword.other.else.oe"]
+            expect(tokens[2].value).toEqual "="
+            expect(tokens[2].scopes).toEqual ["source.openedge", "keyword.operator.math.oe"]
+            expect(tokens[4].value).toEqual "1"
+            expect(tokens[4].scopes).toEqual ["source.openedge", "constant.numeric.oe"]
+            expect(tokens[6].value).toEqual "then"
+            expect(tokens[6].scopes).toEqual ["source.openedge", "keyword.other.then.oe"]
+            expect(tokens[12].value).toEqual "else"
+            expect(tokens[12].scopes).toEqual ["source.openedge", "keyword.other.else.oe"]
