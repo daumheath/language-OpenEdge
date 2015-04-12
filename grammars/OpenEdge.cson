@@ -8,6 +8,9 @@
 ]
 'patterns': [
     {
+        'include': '#ifStatements'
+    }
+    {
         'include': '#oeFunctions'
     }
     {
@@ -70,6 +73,135 @@
                 ]
             }
         ]
+    'doStatement':
+        'patterns': [
+            {
+                'begin': '\\b(?i:do)\\b'
+                'end': '\\b[\\.:]'
+                'name': 'keyword.control.do.oe'
+                'patterns': [
+                    {
+                        'include': '#parameterPatterns'
+                    }
+                ]
+            }
+        ]
+    'ifStatements':
+        'patterns': [
+            {
+                'include': '#ifThen'
+            }
+        ]
+    'ifThen':
+        'patterns': [
+            {
+                'begin': '\\b(?i:if)\\b'
+                'beginCaptures':
+                    '0':
+                        'name': 'keyword.other.if.oe'
+                'end': '\\b(?i:then)\\b'
+                'endCaptures':
+                    '0':
+                        'name': 'keyword.other.then.oe'
+                'patterns': [
+                    {
+                        'include': '#parameterPatterns'
+                    }
+                ]
+            }
+        ]
+    'forStatement':
+        'patterns': [
+            {
+                'begin': '^(?:\\s*\\b)(?i:(for))(?:[^\\w-])'
+                'end': '[\\.:]\\s*\$'
+                'name': 'keyword.other.for.oe'
+                'patterns': [
+                    {
+                        'include': '#parameterPatterns'
+                    }
+                    {
+                        'match': '\\b(?i:each|first|last)\\s*([\\w-]*)\\b'
+                        'captures':
+                            '1':
+                                'name': 'storage.name.table.oe'
+                    }
+                    {
+                        'match': '\\b([\\w\\d-]+\\.[\\w\\d-]+)\\b'
+                        'name': 'storage.name.table.field.oe'
+                    }
+                ]
+            }
+        ]
+    'modifiers':
+        'patterns': [
+            {
+                'match': '\\b(static|private|public|protected|global|shared|new|final|abstract)\\b'
+                'name': 'storage.modifier.oe'
+            }
+        ]
+    'numbers':
+        'patterns': [
+            {
+                'match': '(?<=\\W)\\.?[\\d\\.]*\\d\\b'
+                'name': 'constant.numeric.oe'
+            }
+        ]
+    'oeConstants':
+        'patterns': [
+            {
+                'match': '(?<=[^\\w-])(?i:(yes|no|true|false|\\?))(?=[^\\w-])'
+                'captures':
+                    '1':
+                        'name': 'constant.language.oe'
+            }
+        ]
+    'oeFunctions':
+        'patterns': [
+            {
+                'begin': '\\b((?i:(int(eger)?|log(?:ical)?|string))\\()'
+                'end': '\\)(?=\\W)'
+                'beginCaptures':
+                    '1':
+                        'name': 'support.function.oe'
+                'endCaptures':
+                    '0':
+                        'name': 'support.function.oe'
+                'patterns': [
+                    {
+                        'include': '#parameterPatterns'
+                    }
+                ]
+            }
+        ]
+    'parameterPatterns':
+        'patterns': [
+            {
+                'include': '#oeConstants'
+            }
+            {
+                'include': '#numbers'
+            }
+            {
+                'include': '#strings'
+            }
+            {
+                'include': '#preProcVar'
+            }
+            {
+                'include': '#oeFunctions'
+            }
+            {
+                'include': '#ifStatements'
+            }
+        ]
+    'preProcVar':
+        'patterns': [
+            {
+                'match': '\{&[\\w_\-]+\}'
+                'name': 'constant.other.preprocessor.oe'
+            }
+        ]
     'strings':
       'patterns': [
         {
@@ -101,105 +233,3 @@
           ]
         }
       ]
-    'numbers':
-        'patterns': [
-            {
-                'match': '\\W\\.?[\\d\\.]*\\d\\b'
-                'name': 'constant.numeric.oe'
-            }
-        ]
-    'modifiers':
-        'patterns': [
-            {
-                'match': '\\b(static|private|public|protected|global|shared|new|final|abstract)\\b'
-                'name': 'storage.modifier.oe'
-            }
-        ]
-    'preProcVar':
-        'patterns': [
-            {
-                'match': '\{&[\\w_\-]+\}'
-                'name': 'constant.other.preprocessor.oe'
-            }
-        ]
-    'oeConstants':
-        'patterns': [
-            {
-                'match': '(?<=[^\\w-])(?i:(yes|no|true|false|\\?))(?=[^\\w-])'
-                'captures':
-                    '1':
-                        'name': 'constant.language.oe'
-            }
-        ]
-    'forStatement':
-        'patterns': [
-            {
-                'begin': '^(?:\\s*\\b)(?i:(for))(?:[^\\w-])'
-                'end': '[\\.:]\\s*\$'
-                'name': 'keyword.other.for.oe'
-                'patterns': [
-                    {
-                        'include': '#parameterPatterns'
-                    }
-                    {
-                        'match': '\\b(?i:each|first|last)\\s*([\\w-]*)\\b'
-                        'captures':
-                            '1':
-                                'name': 'storage.name.table.oe'
-                    }
-                    {
-                        'match': '\\b([\\w\\d-]+\\.[\\w\\d-]+)\\b'
-                        'name': 'storage.name.table.field.oe'
-                    }
-                ]
-            }
-        ]
-    'parameterPatterns':
-        'patterns': [
-            {
-                'include': '#oeConstants'
-            }
-            {
-                'include': '#numbers'
-            }
-            {
-                'include': '#strings'
-            }
-            {
-                'include': '#preProcVar'
-            }
-            {
-                'include': '#oeFunctions'
-            }
-        ]
-    'oeFunctions':
-        'patterns': [
-            {
-                'begin': '\\b((?i:(int(eger)?|log(?:ical)?|string))\\()'
-                'end': '\\)(?=\\W)'
-                'beginCaptures':
-                    '1':
-                        'name': 'support.function.oe'
-                'endCaptures':
-                    '0':
-                        'name': 'support.function.oe'
-                'patterns': [
-                    {
-                        'include': '#parameterPatterns'
-                    }
-                ]
-            }
-        ]
-    'doStatement':
-        'patterns': [
-            {
-                'begin': '\\b(?i:do)\\b'
-                'end': '\\b[\\.:]'
-                'name': 'keyword.control.do.oe'
-                'patterns': [
-                    {
-                        'include': '#parameterPatterns'
-                    }
-                ]
-            }
-        ]
