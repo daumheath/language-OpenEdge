@@ -26,12 +26,10 @@
         'include': '#defineStatements'
     }
     {
-        'begin': '/\\*'
-        'end': '\\*/'
-        'name': 'comment.block.oe'
+        'include': '#preProcVar'
     }
     {
-        'include': '#preProcVar'
+        'include': '#comments'
     }
     {
         'begin': '\{(?!&)'
@@ -197,6 +195,9 @@
     'parameterPatterns':
         'patterns': [
             {
+                'include': '#comments'
+            }
+            {
                 'include': '#oeConstants'
             }
             {
@@ -256,3 +257,11 @@
           ]
         }
       ]
+    'comments':
+        'patterns': [
+            {
+                'begin': '/\\*'
+                'end': '\\*/'
+                'name': 'comment.block.oe'
+            }
+        ]
