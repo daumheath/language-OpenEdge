@@ -35,9 +35,7 @@
         'include': '#oeConstants'
     }
     {
-        'begin': '\{(?!&)'
-        'end': '\}'
-        'name': 'string.interpolated.include.oe'
+        'include': '#includeFile'
     }
     {
         'begin': '^&(?i:analyze-suspend|analyze-resume)'
@@ -46,6 +44,14 @@
     }
 ]
 'repository':
+    'includeFile':
+        'patterns': [
+            {
+                'begin': '\{(?!&)'
+                'end': '\}'
+                'name': 'string.interpolated.include.oe'
+            }
+        ]
     'defineStatements':
         'patterns': [
             {
