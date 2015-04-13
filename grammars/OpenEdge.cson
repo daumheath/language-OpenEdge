@@ -63,7 +63,7 @@
                         'include': '#oeConstants'
                     }
                     {
-                        'match': '\\b([\\w\\d_\-]*)\\s*(?i:(as))\\s*([\\w\\d_\\-]*(?:\\.\\w*)*)'
+                        'match': '\\b([\\w\\d_\-]*)\\s*(?i:(as))\\s*([\\w\\d_\\-]*(?:\\.\\w+)*)'
                         'captures':
                             '1':
                                 'name': 'variable.other.oe'
