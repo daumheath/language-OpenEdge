@@ -32,12 +32,17 @@
         'include': '#comments'
     }
     {
+        'include': '#oeConstants'
+    }
+    {
         'begin': '\{(?!&)'
         'end': '\}'
         'name': 'string.interpolated.include.oe'
     }
     {
-        'include': '#oeConstants'
+        'begin': '^&(?i:analyze-suspend|analyze-resume)'
+        'end': '$'
+        'name': 'meta.analyze-suspend'
     }
 ]
 'repository':
