@@ -32,15 +32,21 @@
         'include': '#comments'
     }
     {
-        'begin': '\{(?!&)'
-        'end': '\}'
-        'name': 'string.interpolated.include.oe'
+        'include': '#includeFile'
     }
     {
         'include': '#oeConstants'
     }
 ]
 'repository':
+    'includeFile':
+        'patterns': [
+            {
+                'begin': '\{(?!&)'
+                'end': '\}'
+                'name': 'string.interpolated.include.oe'
+            }
+        ]
     'defineStatements':
         'patterns': [
             {
