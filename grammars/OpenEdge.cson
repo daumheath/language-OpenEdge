@@ -43,6 +43,14 @@
     }
 ]
 'repository':
+    'msgBox':
+        'patterns': [
+            {
+                'begin': 'message'
+                'end': '\\.\\b'
+                'name': 'keyword.other.message.oe'
+            }
+        ]
     'defineStatements':
         'patterns': [
             {
