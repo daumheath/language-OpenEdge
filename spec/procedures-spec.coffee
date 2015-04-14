@@ -264,3 +264,16 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[0][2].value).toEqual ":"
             expect(tokens[0][2].scopes).toEqual ["source.openedge", "keyword.other.doblock.oe"]
             expect(tokens[1][0].scopes).toEqual ["source.openedge"]
+
+    describe "&ANALYZE-SUSPEND parsing", ->
+        it "parses appbuilder markup around function", ->
+            {tokens} = grammar.tokenizeLine "&ANALYZE-SUSPEND _UIB-CODE-BLOCK _FUNCTION testFunction fFrameWin"
+
+            expect(tokens[0].value).toEqual "&ANALYZE-SUSPEND"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.analyze-suspend"]
+            expect(tokens[1].value).toEqual " _UIB-CODE-BLOCK _FUNCTION "
+            expect(tokens[1].scopes).toEqual ["source.openedge", "meta.analyze-suspend"]
+            expect(tokens[2].value).toEqual "testFunction"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.analyze-suspend", "entity.name.function.oe"]
+            expect(tokens[3].value).toEqual " fFrameWin"
+            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.analyze-suspend"]

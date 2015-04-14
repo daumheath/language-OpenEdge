@@ -41,6 +41,16 @@
         'begin': '^&(?i:analyze-suspend|analyze-resume)'
         'end': '$'
         'name': 'meta.analyze-suspend'
+        'patterns': [
+            {
+                'match': '(?i:(?<=_function\\s))[\\w\\d-]*'
+                'name': 'entity.name.function.oe'
+            }
+            {
+                'match': '(?i:(?<=_function-forward\\s))[\\w\\d-]*'
+                'name': 'entity.name.function.oe'
+            }
+        ]
     }
 ]
 'repository':
