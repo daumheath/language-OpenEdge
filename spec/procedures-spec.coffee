@@ -81,8 +81,8 @@ describe "OpenEdge procedures grammer", ->
 
     describe "strings", ->
         delimsByScope =
-            "string.quoted.double.oe": '"'
-            "string.quoted.single.oe": "'"
+            "string.quoted.oe": '"'
+            "string.quoted.oe": "'"
 
         it "tokenizes single-line strings", ->
             for scope, delim of delimsByScope
@@ -221,9 +221,9 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[0].value).toEqual "int("
             expect(tokens[0].scopes).toEqual ["source.openedge", "support.function.oe"]
             expect(tokens[1].value).toEqual "'"
-            expect(tokens[1].scopes).toEqual ["source.openedge", "string.quoted.single.oe"]
+            expect(tokens[1].scopes).toEqual ["source.openedge", "string.quoted.oe"]
             expect(tokens[2].value).toEqual "'"
-            expect(tokens[2].scopes).toEqual ["source.openedge", "string.quoted.single.oe"]
+            expect(tokens[2].scopes).toEqual ["source.openedge", "string.quoted.oe"]
             expect(tokens[3].value).toEqual ")"
             expect(tokens[3].scopes).toEqual ["source.openedge", "support.function.oe"]
 
@@ -251,3 +251,16 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[6].scopes).toEqual ["source.openedge", "keyword.other.then.oe"]
             expect(tokens[12].value).toEqual "else"
             expect(tokens[12].scopes).toEqual ["source.openedge", "keyword.other.else.oe"]///
+
+    describe "DO blocks", ->
+        it "parses basic DO block", ->
+            tokens = grammar.tokenizeLines """if x = 1 then do:
+            x = 1.
+            end.
+            """
+
+            expect(tokens[0][1].value).toEqual "do"
+            expect(tokens[0][1].scopes).toEqual ["source.openedge", "keyword.other.doblock.oe"]
+            expect(tokens[0][2].value).toEqual ":"
+            expect(tokens[0][2].scopes).toEqual ["source.openedge", "keyword.other.doblock.oe"]
+            expect(tokens[1][0].scopes).toEqual ["source.openedge"]
