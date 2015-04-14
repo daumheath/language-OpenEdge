@@ -32,10 +32,25 @@
         'include': '#comments'
     }
     {
+        'include': '#oeConstants'
+    }
+    {
         'include': '#includeFile'
     }
     {
-        'include': '#oeConstants'
+        'begin': '^&(?i:analyze-suspend|analyze-resume)'
+        'end': '$'
+        'name': 'meta.analyze-suspend'
+        'patterns': [
+            {
+                'match': '(?i:(?<=_function\\s))[\\w\\d-]*'
+                'name': 'entity.name.function.oe'
+            }
+            {
+                'match': '(?i:(?<=_function-forward\\s))[\\w\\d-]*'
+                'name': 'entity.name.function.oe'
+            }
+        ]
     }
 ]
 'repository':
@@ -67,7 +82,7 @@
                         'include': '#oeConstants'
                     }
                     {
-                        'match': '\\b([\\w\\d_\-]*)\\s*(?i:(as))\\s*([\\w\\d_\\-]*(?:\\.\\w+)*)'
+                        'match': '\\b([\\w\\d_\-]*)\\s+(?i:(as))\\s+([\\w\\d_\\-]*(?:\\.\\w+)*)'
                         'captures':
                             '1':
                                 'name': 'variable.other.oe'
@@ -235,22 +250,8 @@
     'strings':
       'patterns': [
         {
-          'begin': '[\']'
-          'end': '[\']'
-          'name': 'string.quoted.oe'
-          'patterns': [
-            {
-              'match': '\~.'
-              'name': 'constant.character.escape.oe'
-            }
-            {
-                'include': '#preProcVar'
-            }
-          ]
-        }
-        {
-          'begin': '["]'
-          'end': '["]'
+          'begin': '["\']'
+          'end': '["\']'
           'name': 'string.quoted.oe'
           'patterns': [
             {
