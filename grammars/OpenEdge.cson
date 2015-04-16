@@ -250,8 +250,22 @@
     'strings':
       'patterns': [
         {
-          'begin': '["\']'
-          'end': '["\']'
+          'begin': '[\']'
+          'end': '[\']'
+          'name': 'string.quoted.oe'
+          'patterns': [
+            {
+              'match': '\~.'
+              'name': 'constant.character.escape.oe'
+            }
+            {
+                'include': '#preProcVar'
+            }
+          ]
+        }
+        {
+          'begin': '["]'
+          'end': '["]'
           'name': 'string.quoted.oe'
           'patterns': [
             {
