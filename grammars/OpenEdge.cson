@@ -38,6 +38,9 @@
         'include': '#includeFile'
     }
     {
+        'include': '#oeFlowControl'
+    }
+    {
         'begin': '^&(?i:analyze-suspend|analyze-resume)'
         'end': '$'
         'name': 'meta.analyze-suspend'
@@ -54,6 +57,13 @@
     }
 ]
 'repository':
+    'oeFlowControl':
+        'patterns': [
+            {
+                'match': '(?<=\\W)(?i:return|next)(?=\\W)'
+                'name': 'keyword.control.oe'
+            }
+        ]
     'includeFile':
         'patterns': [
             {
