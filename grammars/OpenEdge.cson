@@ -8,7 +8,7 @@
 ]
 'patterns': [
     {
-        'include': '#ifStatements'
+        #'include': '#ifStatements'
     }
     {
         'include': '#oeFunctions'
@@ -26,20 +26,34 @@
         'include': '#defineStatements'
     }
     {
-        'begin': '/\\*'
-        'end': '\\*/'
-        'name': 'comment.block.oe'
-    }
-    {
         'include': '#preProcVar'
     }
     {
-        'begin': '\{(?!&)'
-        'end': '\}'
-        'name': 'string.interpolated.include.oe'
+        'include': '#comments'
     }
     {
         'include': '#oeConstants'
+    }
+    {
+        'include': '#includeFile'
+    }
+    {
+        'include': '#oeFlowControl'
+    }
+    {
+        'begin': '^&(?i:analyze-suspend|analyze-resume)'
+        'end': '$'
+        'name': 'meta.analyze-suspend'
+        'patterns': [
+            {
+                'match': '(?i:(?<=_function\\s))[\\w\\d-]*'
+                'name': 'entity.name.function.oe'
+            }
+            {
+                'match': '(?i:(?<=_function-forward\\s))[\\w\\d-]*'
+                'name': 'entity.name.function.oe'
+            }
+        ]
     }
 ]
 'repository':
@@ -49,6 +63,21 @@
                 'begin': 'message'
                 'end': '\\.\\b'
                 'name': 'keyword.other.message.oe'
+            }
+        ]
+    'oeFlowControl':
+        'patterns': [
+            {
+                'match': '(?<=\\W)(?i:return|next)(?=\\W)'
+                'name': 'keyword.control.oe'
+            }
+        ]
+    'includeFile':
+        'patterns': [
+            {
+                'begin': '\{(?!&)'
+                'end': '\}'
+                'name': 'string.interpolated.include.oe'
             }
         ]
     'defineStatements':
@@ -71,7 +100,7 @@
                         'include': '#oeConstants'
                     }
                     {
-                        'match': '\\b([\\w\\d_\-]*)\\s*(?i:(as))\\s*([\\w\\d_\\-]*(?:\\.\\w*)*)'
+                        'match': '\\b([\\w\\d_\-]*)\\s+(?i:(as))\\s+([\\w\\d_\\-]*(?:\\.\\w+)*)'
                         'captures':
                             '1':
                                 'name': 'variable.other.oe'
@@ -84,9 +113,9 @@
     'doStatement':
         'patterns': [
             {
-                'begin': '\\b(?i:do)\\b'
-                'end': '\\b[\\.:]'
-                'name': 'keyword.control.do.oe'
+                'begin': '(?<=\\s)(?i:do)\\b'
+                'end': '[\\.:](?=\\s*$)'
+                'name': 'keyword.other.doblock.oe'
                 'patterns': [
                     {
                         'include': '#parameterPatterns'
@@ -205,6 +234,9 @@
     'parameterPatterns':
         'patterns': [
             {
+                'include': '#comments'
+            }
+            {
                 'include': '#oeConstants'
             }
             {
@@ -232,13 +264,27 @@
                 'match': '\{&[\\w_\-]+\}'
                 'name': 'constant.other.preprocessor.oe'
             }
+            {
+                'begin': '^\\s*(&(?i:(?:scoped|global)-define))\\s+([\\w\\d-]*)'
+                'beginCaptures':
+                    '1':
+                        'name': 'keyword.other.preprocessordefine.oe'
+                    '2':
+                        'name': 'constant.other.preprocessor.oe'
+                'end': '$'
+                'name': 'meta.preprocessor.define.oe'
+                'patterns': [
+                    { 'include': '#numbers' }
+                    { 'include': '#strings' }
+                ]
+            }
         ]
     'strings':
       'patterns': [
         {
-          'begin': '"'
-          'end': '"'
-          'name': 'string.quoted.double.oe'
+          'begin': '[\']'
+          'end': '[\']'
+          'name': 'string.quoted.oe'
           'patterns': [
             {
               'match': '\~.'
@@ -250,9 +296,9 @@
           ]
         }
         {
-          'begin': '\''
-          'end': '\''
-          'name': 'string.quoted.single.oe'
+          'begin': '["]'
+          'end': '["]'
+          'name': 'string.quoted.oe'
           'patterns': [
             {
               'match': '\~.'
@@ -264,3 +310,11 @@
           ]
         }
       ]
+    'comments':
+        'patterns': [
+            {
+                'begin': '/\\*'
+                'end': '\\*/'
+                'name': 'comment.block.oe'
+            }
+        ]
