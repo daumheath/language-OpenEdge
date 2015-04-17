@@ -246,6 +246,20 @@
                 'match': '\{&[\\w_\-]+\}'
                 'name': 'constant.other.preprocessor.oe'
             }
+            {
+                'begin': '^\\s*(&(?i:(?:scoped|global)-define))\\s+([\\w\\d-]*)'
+                'beginCaptures':
+                    '1':
+                        'name': 'keyword.other.preprocessordefine.oe'
+                    '2':
+                        'name': 'constant.other.preprocessor.oe'
+                'end': '$'
+                'name': 'meta.preprocessor.define.oe'
+                'patterns': [
+                    { 'include': '#numbers' }
+                    { 'include': '#strings' }
+                ]
+            }
         ]
     'strings':
       'patterns': [
