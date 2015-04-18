@@ -14,6 +14,43 @@ describe "OpenEdge procedures grammer", ->
         expect(grammar).toBeTruthy()
         expect(grammar.scopeName).toBe "source.openedge"
 
+    describe "message box", ->
+        it "parses basic message box", ->
+            {tokens} = grammar.tokenizeLine 'message "test message" view-as alert-box.'
+
+            expect(tokens[0].value).toEqual "message"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "keyword.other.message.oe"]
+            expect(tokens[2].value).toEqual '"'
+            expect(tokens[2].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "string.quoted.oe"]
+            expect(tokens[3].value).toEqual "test message"
+            expect(tokens[3].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "string.quoted.oe"]
+            expect(tokens[4].value).toEqual '"'
+            expect(tokens[4].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "string.quoted.oe"]
+            expect(tokens[5].value).toEqual " view-as alert-box."
+            expect(tokens[5].scopes).toEqual ["source.openedge", "keyword.other.message.oe"]
+
+        it "parses question message box", ->
+            tokens = grammar.tokenizeLines """message "test message"
+                view-as alert-box question buttons yes-no update vChoice as logical.
+            """
+
+            expect(tokens[0][0].value).toEqual "message"
+            expect(tokens[0][0].scopes).toEqual ["source.openedge", "keyword.other.message.oe"]
+            expect(tokens[0][2].value).toEqual '"'
+            expect(tokens[0][2].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "string.quoted.oe"]
+            expect(tokens[0][3].value).toEqual "test message"
+            expect(tokens[0][3].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "string.quoted.oe"]
+            expect(tokens[0][4].value).toEqual '"'
+            expect(tokens[0][4].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "string.quoted.oe"]
+            expect(tokens[1][0].value.trim()).toEqual "view-as alert-box question buttons yes-no update"
+            expect(tokens[1][0].scopes).toEqual ["source.openedge", "keyword.other.message.oe"]
+            expect(tokens[1][1].value).toEqual "vChoice"
+            expect(tokens[1][1].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "variable.other.oe"]
+            expect(tokens[1][2].value).toEqual " as "
+            expect(tokens[1][2].scopes).toEqual ["source.openedge", "keyword.other.message.oe"]
+            expect(tokens[1][3].value).toEqual "logical"
+            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "storage.type.oe"]
+
     describe "language constants", ->
         it "tokenizes language constants", ->
             sample = "setValues(1,yes)"

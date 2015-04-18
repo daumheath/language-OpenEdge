@@ -41,6 +41,9 @@
         'include': '#oeFlowControl'
     }
     {
+        'include': '#msgBox'
+    }
+    {
         'begin': '^&(?i:analyze-suspend|analyze-resume)'
         'end': '$'
         'name': 'meta.analyze-suspend'
@@ -63,6 +66,10 @@
                 'begin': 'message'
                 'end': '\\.\\b'
                 'name': 'keyword.other.message.oe'
+                'patterns': [
+                    { 'include': '#parameterPatterns' }
+                    { 'include': '#varNameAndType'}
+                ]
             }
         ]
     'oeFlowControl':
@@ -99,15 +106,19 @@
                     {
                         'include': '#oeConstants'
                     }
-                    {
-                        'match': '\\b([\\w\\d_\-]*)\\s+(?i:(as))\\s+([\\w\\d_\\-]*(?:\\.\\w+)*)'
-                        'captures':
-                            '1':
-                                'name': 'variable.other.oe'
-                            '3':
-                                'name': 'storage.type.oe'
-                    }
+                    { 'include': '#varNameAndType'}
                 ]
+            }
+        ]
+    'varNameAndType':
+        'patterns': [
+            {
+                'match': '\\b([\\w\\d_\-]*)\\s+(?i:(as))\\s+([\\w\\d_\\-]*(?:\\.\\w+)*)'
+                'captures':
+                    '1':
+                        'name': 'variable.other.oe'
+                    '3':
+                        'name': 'storage.type.oe'
             }
         ]
     'doStatement':
