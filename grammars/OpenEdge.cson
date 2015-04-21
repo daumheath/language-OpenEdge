@@ -13,6 +13,7 @@
     {
         'include': '#oeFunctions'
     }
+    { 'include': '#functionsMethods' }
     {
         'include': '#strings'
     }
@@ -63,7 +64,7 @@
     'functionsMethods':
         'patterns': [
             {
-                'begin': '[\\w\\d-]+\\('
+                'begin': '[\\w\\d-]+\\s*\\('
                 'end': '\\)'
                 'name': 'entity.name.function.oe'
                 'patterns': [
@@ -262,6 +263,10 @@
             { 'include': '#ifStatements' }
             { 'include': '#mathOperators' }
             { 'include': '#functionsMethods' }
+            {
+                'match': '(?i:input-output|input|output)'
+                'name': 'keyword.other.oe'
+            }
         ]
     'preProcVar':
         'patterns': [
