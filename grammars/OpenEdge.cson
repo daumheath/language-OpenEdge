@@ -220,7 +220,7 @@
     'oeFunctions':
         'patterns': [
             {
-                'begin': '\\b((?i:(int(eger)?|log(?:ical)?|string))\\()'
+                'begin': '\\b((?i:(int(eger)?|log(?:ical)?|string|lookup|entry|chr|trim|substitute|mtime|date|replace|substring|index|num-entries))\\()'
                 'end': '\\)(?=\\W)'
                 'beginCaptures':
                     '1':
