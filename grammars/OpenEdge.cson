@@ -60,6 +60,17 @@
     }
 ]
 'repository':
+    'functionsMethods':
+        'patterns': [
+            {
+                'begin': '[\\w\\d-]+\\('
+                'end': '\\)'
+                'name': 'entity.name.function.oe'
+                'patterns': [
+                    { 'include': '#parameterPatterns' }
+                ]
+            }
+        ]
     'msgBox':
         'patterns': [
             {
@@ -229,9 +240,7 @@
                     '0':
                         'name': 'support.function.oe'
                 'patterns': [
-                    {
-                        'include': '#parameterPatterns'
-                    }
+                    { 'include': '#parameterPatterns' }
                 ]
             }
         ]
@@ -244,30 +253,15 @@
         ]
     'parameterPatterns':
         'patterns': [
-            {
-                'include': '#comments'
-            }
-            {
-                'include': '#oeConstants'
-            }
-            {
-                'include': '#numbers'
-            }
-            {
-                'include': '#strings'
-            }
-            {
-                'include': '#preProcVar'
-            }
-            {
-                'include': '#oeFunctions'
-            }
-            {
-                'include': '#ifStatements'
-            }
-            {
-                'include': '#mathOperators'
-            }
+            { 'include': '#comments' }
+            { 'include': '#oeConstants' }
+            { 'include': '#numbers' }
+            { 'include': '#strings' }
+            { 'include': '#preProcVar' }
+            { 'include': '#oeFunctions' }
+            { 'include': '#ifStatements' }
+            { 'include': '#mathOperators' }
+            { 'include': '#functionsMethods' }
         ]
     'preProcVar':
         'patterns': [
