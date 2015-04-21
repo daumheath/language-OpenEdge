@@ -85,6 +85,15 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[2].value).toEqual ")"
             expect(tokens[2].scopes).toEqual ["source.openedge", "meta.function.oe", "entity.name.function.oe"]
 
+    describe "class definition", ->
+        it "parses class definition", ->
+            {tokens} = grammar.tokenizeLine "CLASS testClass:"
+
+            expect(tokens[0].value).toEqual "CLASS"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.class.oe", "keyword.other.oe"]
+            expect(tokens[2].value).toEqual "testClass"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.class.oe", "entity.name.type.class.oe"]
+
     describe "comments", ->
         it "tokenizes single line comment", ->
             sample = "/*test comment*/"

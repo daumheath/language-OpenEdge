@@ -59,6 +59,25 @@
             }
         ]
     }
+    {
+        'begin': '^\\s*(?i:class)'
+        'beginCaptures':
+            '0':
+                'name': 'keyword.other.oe'
+        'end': '[\.:]$'
+        'endCaptures':
+            '0':
+                'name': 'keyword.other.oe'
+        'name': 'meta.class.oe'
+        'patterns': [
+            {
+                'match': '(?i:(?<=class))\\s*(\\w[\\w\\d-]*)'
+                'captures':
+                    '1':
+                        'name': 'entity.name.type.class.oe'
+            }
+        ]
+    }
 ]
 'repository':
     'functionsMethods':
