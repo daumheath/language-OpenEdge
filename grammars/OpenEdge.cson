@@ -38,12 +38,37 @@
         'include': '#includeFile'
     }
     {
+        'include': '#oeFlowControl'
+    }
+    {
+        'include': '#msgBox'
+    }
+    {
         'begin': '^&(?i:analyze-suspend|analyze-resume)'
         'end': '$'
         'name': 'meta.analyze-suspend'
     }
 ]
 'repository':
+    'msgBox':
+        'patterns': [
+            {
+                'begin': 'message'
+                'end': '\\.\\b'
+                'name': 'keyword.other.message.oe'
+                'patterns': [
+                    { 'include': '#parameterPatterns' }
+                    { 'include': '#varNameAndType'}
+                ]
+            }
+        ]
+    'oeFlowControl':
+        'patterns': [
+            {
+                'match': '(?<=\\W)(?i:return|next)(?=\\W)'
+                'name': 'keyword.control.oe'
+            }
+        ]
     'includeFile':
         'patterns': [
             {
@@ -71,15 +96,19 @@
                     {
                         'include': '#oeConstants'
                     }
-                    {
-                        'match': '\\b([\\w\\d_\-]*)\\s+(?i:(as))\\s+([\\w\\d_\\-]*(?:\\.\\w+)*)'
-                        'captures':
-                            '1':
-                                'name': 'variable.other.oe'
-                            '3':
-                                'name': 'storage.type.oe'
-                    }
+                    { 'include': '#varNameAndType'}
                 ]
+            }
+        ]
+    'varNameAndType':
+        'patterns': [
+            {
+                'match': '\\b([\\w\\d_\-]*)\\s+(?i:(as))\\s+([\\w\\d_\\-]*(?:\\.\\w+)*)'
+                'captures':
+                    '1':
+                        'name': 'variable.other.oe'
+                    '3':
+                        'name': 'storage.type.oe'
             }
         ]
     'doStatement':
@@ -181,7 +210,7 @@
     'oeFunctions':
         'patterns': [
             {
-                'begin': '\\b((?i:(int(eger)?|log(?:ical)?|string))\\()'
+                'begin': '\\b((?i:(int(eger)?|log(?:ical)?|string|lookup|entry|chr|trim|substitute|mtime|date|replace|substring|index|num-entries))\\()'
                 'end': '\\)(?=\\W)'
                 'beginCaptures':
                     '1':
@@ -235,6 +264,20 @@
             {
                 'match': '\{&[\\w_\-]+\}'
                 'name': 'constant.other.preprocessor.oe'
+            }
+            {
+                'begin': '^\\s*(&(?i:(?:scoped|global)-define))\\s+([\\w\\d-]*)'
+                'beginCaptures':
+                    '1':
+                        'name': 'keyword.other.preprocessordefine.oe'
+                    '2':
+                        'name': 'constant.other.preprocessor.oe'
+                'end': '$'
+                'name': 'meta.preprocessor.define.oe'
+                'patterns': [
+                    { 'include': '#numbers' }
+                    { 'include': '#strings' }
+                ]
             }
         ]
     'strings':
