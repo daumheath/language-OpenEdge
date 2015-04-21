@@ -65,8 +65,14 @@
         'patterns': [
             {
                 'begin': '[\\w\\d-]+\\s*\\('
+                'beginCaptures':
+                    '0':
+                        'name': 'entity.name.function.oe'
                 'end': '\\)'
-                'name': 'entity.name.function.oe'
+                'endCaptures':
+                    '0':
+                        'name': 'entity.name.function.oe'
+                'name': 'meta.function.oe'
                 'patterns': [
                     { 'include': '#parameterPatterns' }
                 ]

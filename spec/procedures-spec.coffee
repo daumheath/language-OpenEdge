@@ -55,8 +55,8 @@ describe "OpenEdge procedures grammer", ->
         it "tokenizes language constants", ->
             sample = "setValues(1,yes)"
             {tokens} = grammar.tokenizeLine(sample)
-            expect(tokens[1].value).toEqual "yes"
-            expect(tokens[1].scopes).toEqual ["source.openedge", "constant.language.oe"]
+            expect(tokens[3].value).toEqual "yes"
+            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.function.oe", "constant.language.oe"]
 
             sample = "x = true."
             {tokens} = grammar.tokenizeLine(sample)
@@ -72,9 +72,18 @@ describe "OpenEdge procedures grammer", ->
             sample = "xyz(yes,no)"
             {tokens} = grammar.tokenizeLine(sample)
             expect(tokens[1].value).toEqual "yes"
-            expect(tokens[1].scopes).toEqual ["source.openedge", "constant.language.oe"]
+            expect(tokens[1].scopes).toEqual ["source.openedge", "meta.function.oe", "constant.language.oe"]
             expect(tokens[3].value).toEqual "no"
-            expect(tokens[3].scopes).toEqual ["source.openedge", "constant.language.oe"]
+            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.function.oe", "constant.language.oe"]
+
+    describe "other functions and methods", ->
+        it 'parses functions and method statements', ->
+            {tokens} = grammar.tokenizeLine "test(x,x)"
+
+            expect(tokens[0].value).toEqual "test("
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.function.oe", "entity.name.function.oe"]
+            expect(tokens[2].value).toEqual ")"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.function.oe", "entity.name.function.oe"]
 
     describe "comments", ->
         it "tokenizes single line comment", ->
