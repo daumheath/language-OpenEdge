@@ -13,6 +13,7 @@
     {
         'include': '#oeFunctions'
     }
+    { 'include': '#functionsMethods' }
     {
         'include': '#strings'
     }
@@ -48,8 +49,39 @@
         'end': '$'
         'name': 'meta.analyze-suspend'
     }
+    {
+        'begin': '^\\s*(?i:(class\\s+(?:public\\s+|private\\s+|protected\\s+|abstract\\s+|static\\s+)*)(\\w[\\w\\d-]*)(?:\\s+(inherits|implements)\\s+(\\w[\\w\\d-]*))?)'
+        'beginCaptures':
+            '1':
+                'name': 'keyword.other.oe'
+            '2':
+                'name': 'entity.name.type.class.oe'
+            '3':
+                'name': 'keyword.other.oe'
+            '4':
+                'name': 'entity.other.inherited-class.oe'
+        'end': '[\.:]$'
+        'name': 'meta.class.oe'
+    }
 ]
 'repository':
+    'functionsMethods':
+        'patterns': [
+            {
+                'begin': '[\\w\\d-]+\\s*\\('
+                'beginCaptures':
+                    '0':
+                        'name': 'entity.name.function.oe'
+                'end': '\\)'
+                'endCaptures':
+                    '0':
+                        'name': 'entity.name.function.oe'
+                'name': 'meta.function.oe'
+                'patterns': [
+                    { 'include': '#parameterPatterns' }
+                ]
+            }
+        ]
     'msgBox':
         'patterns': [
             {
@@ -210,7 +242,7 @@
     'oeFunctions':
         'patterns': [
             {
-                'begin': '\\b((?i:(int(eger)?|log(?:ical)?|string|lookup|entry|chr|trim|substitute|mtime|date|replace|substring|index|num-entries))\\()'
+                'begin': '\\b((?i:(int(eger)?|log(ical)?|string|lookup|entry|chr|trim|substitute|mtime|date|replace|substring|index|num-entries|dec(imal)?))\\()'
                 'end': '\\)(?=\\W)'
                 'beginCaptures':
                     '1':
@@ -219,9 +251,7 @@
                     '0':
                         'name': 'support.function.oe'
                 'patterns': [
-                    {
-                        'include': '#parameterPatterns'
-                    }
+                    { 'include': '#parameterPatterns' }
                 ]
             }
         ]
@@ -234,29 +264,18 @@
         ]
     'parameterPatterns':
         'patterns': [
+            { 'include': '#comments' }
+            { 'include': '#oeConstants' }
+            { 'include': '#numbers' }
+            { 'include': '#strings' }
+            { 'include': '#preProcVar' }
+            { 'include': '#oeFunctions' }
+            { 'include': '#ifStatements' }
+            { 'include': '#mathOperators' }
+            { 'include': '#functionsMethods' }
             {
-                'include': '#comments'
-            }
-            {
-                'include': '#oeConstants'
-            }
-            {
-                'include': '#numbers'
-            }
-            {
-                'include': '#strings'
-            }
-            {
-                'include': '#preProcVar'
-            }
-            {
-                'include': '#oeFunctions'
-            }
-            {
-                'include': '#ifStatements'
-            }
-            {
-                'include': '#mathOperators'
+                'match': '(?i:input-output|input|output)'
+                'name': 'keyword.other.oe'
             }
         ]
     'preProcVar':

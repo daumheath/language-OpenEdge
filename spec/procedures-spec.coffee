@@ -55,8 +55,8 @@ describe "OpenEdge procedures grammer", ->
         it "tokenizes language constants", ->
             sample = "setValues(1,yes)"
             {tokens} = grammar.tokenizeLine(sample)
-            expect(tokens[1].value).toEqual "yes"
-            expect(tokens[1].scopes).toEqual ["source.openedge", "constant.language.oe"]
+            expect(tokens[3].value).toEqual "yes"
+            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.function.oe", "constant.language.oe"]
 
             sample = "x = true."
             {tokens} = grammar.tokenizeLine(sample)
@@ -72,9 +72,43 @@ describe "OpenEdge procedures grammer", ->
             sample = "xyz(yes,no)"
             {tokens} = grammar.tokenizeLine(sample)
             expect(tokens[1].value).toEqual "yes"
-            expect(tokens[1].scopes).toEqual ["source.openedge", "constant.language.oe"]
+            expect(tokens[1].scopes).toEqual ["source.openedge", "meta.function.oe", "constant.language.oe"]
             expect(tokens[3].value).toEqual "no"
-            expect(tokens[3].scopes).toEqual ["source.openedge", "constant.language.oe"]
+            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.function.oe", "constant.language.oe"]
+
+    describe "other functions and methods", ->
+        it 'parses functions and method statements', ->
+            {tokens} = grammar.tokenizeLine "test(x,x)"
+
+            expect(tokens[0].value).toEqual "test("
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.function.oe", "entity.name.function.oe"]
+            expect(tokens[2].value).toEqual ")"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.function.oe", "entity.name.function.oe"]
+
+    describe "class definition", ->
+        it "parses basic class definition", ->
+            {tokens} = grammar.tokenizeLine "CLASS testClass:"
+
+            expect(tokens[0].value).toEqual "CLASS "
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.class.oe", "keyword.other.oe"]
+            expect(tokens[1].value).toEqual "testClass"
+            expect(tokens[1].scopes).toEqual ["source.openedge", "meta.class.oe", "entity.name.type.class.oe"]
+            expect(tokens[2].value).toEqual ":"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.class.oe"]
+
+        it "parses child class definition", ->
+            {tokens} = grammar.tokenizeLine "CLASS public abstract testClass inherits testBase:"
+
+            expect(tokens[0].value).toEqual "CLASS public abstract "
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.class.oe", "keyword.other.oe"]
+            expect(tokens[1].value).toEqual "testClass"
+            expect(tokens[1].scopes).toEqual ["source.openedge", "meta.class.oe", "entity.name.type.class.oe"]
+            expect(tokens[3].value).toEqual "inherits"
+            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.class.oe", "keyword.other.oe"]
+            expect(tokens[5].value).toEqual "testBase"
+            expect(tokens[5].scopes).toEqual ["source.openedge", "meta.class.oe", "entity.other.inherited-class.oe"]
+            expect(tokens[6].value).toEqual ":"
+            expect(tokens[6].scopes).toEqual ["source.openedge", "meta.class.oe"]
 
     describe "comments", ->
         it "tokenizes single line comment", ->
