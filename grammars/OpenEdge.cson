@@ -7,29 +7,7 @@
     'i'
 ]
 'patterns': [
-    {
-        #'include': '#ifStatements'
-    }
-    { 'include': '#oeFunctions' }
-    { 'include': '#functionsMethods' }
-    { 'include': '#strings' }
-    { 'include': '#forStatement' }
-    { 'include': '#doStatement' }
-    { 'include': '#defineStatements' }
-    { 'include': '#preProcVar' }
-    { 'include': '#comments' }
-    { 'include': '#oeConstants' }
-    { 'include': '#includeFile' }
-    { 'include': '#oeFlowControl' }
-    { 'include': '#msgBox' }
-    {
-        'begin': '^&(?i:analyze-suspend|analyze-resume)'
-        'beginCaptures':
-            '0':
-                'name': 'keyword.other.preprocessor.oe'
-        'end': '$'
-        'name': 'meta.analyze-suspend'
-    }
+    { 'include': '#codeBlock' }
     {
         'begin': '^\\s*(?i:(class\\s+(?:public\\s+|private\\s+|protected\\s+|abstract\\s+|static\\s+)*)(\\w[\\w\\d-]*)(?:\\s+(inherits|implements)\\s+(\\w[\\w\\d-]*))?)'
         'beginCaptures':
@@ -46,6 +24,78 @@
     }
 ]
 'repository':
+    'codeBlock':
+        'patterns': [
+            {
+                #'include': '#ifStatements'
+            }
+            { 'include': '#oeFunctions' }
+            { 'include': '#functionsMethods' }
+            { 'include': '#strings' }
+            { 'include': '#forStatement' }
+            { 'include': '#doStatement' }
+            { 'include': '#defineStatements' }
+            { 'include': '#preProcVar' }
+            { 'include': '#comments' }
+            { 'include': '#oeConstants' }
+            { 'include': '#includeFile' }
+            { 'include': '#oeFlowControl' }
+            { 'include': '#msgBox' }
+            {
+                'begin': '&(?i:if)'
+                'beginCaptures':
+                    '0':
+                        'name': 'keyword.other.preprocif.oe'
+                'end': '&(?:endif)'
+                'endCaptures':
+                    '0':
+                        'name': 'keyword.other.preprocif.oe'
+                'name': 'meta.preprocessor.if'
+                'patterns': [
+                    { 'include': '#parameterPatterns'}
+                    { 'include': '#codeBlock'}
+                    {
+                        'match': '(?i:&then|&else|&elseif)'
+                        'name': 'keyword.other.preprocif.oe'
+                    }
+                ]
+            }
+            {
+                'begin': '^&(?i:analyze-suspend)'
+                'beginCaptures':
+                    '0':
+                        'name': 'keyword.other.preprocessor.oe'
+                'end': '^&(?i:analyze-resume)'
+                'endCaptures':
+                    '0':
+                        'name': 'keyword.other.preprocessor.oe'
+                'name': 'meta.analyze-suspend'
+                'patterns': [
+                    { 'include': '#codeBlock' }
+                ]
+            }
+        ]
+    'preProcIf':
+        'patterns': [
+            {
+                'begin': '&(?i:if)'
+                'beginCaptures':
+                    '0':
+                        'name': 'keyword.other.preprocif.oe'
+                'end': '&(?:endif)'
+                'endCaptures':
+                    '0':
+                        'name': 'keyword.other.preprocif.oe'
+                'name': 'meta.preprocessor.if'
+                'patterns': [
+                    { 'include': '#parameterPatterns'}
+                    {
+                        'match': '(?i:&then|&else|&elseif)'
+                        'name': 'keyword.other.preprocif.oe'
+                    }
+                ]
+            }
+        ]
     'functionsMethods':
         'patterns': [
             {
@@ -207,7 +257,7 @@
     'numbers':
         'patterns': [
             {
-                'match': '(?<=\\W)\\.?[\\d\\.]*\\d\\b'
+                'match': '(?<=[^\\w-])\\.?[\\d\\.]*\\d\\b'
                 'name': 'constant.numeric.oe'
             }
         ]
@@ -258,6 +308,7 @@
             { 'include': '#ifStatements' }
             { 'include': '#operators' }
             { 'include': '#functionsMethods' }
+            { 'include': '#preProcIf'}
             {
                 'match': '(?i:input-output|input|output)'
                 'name': 'keyword.other.oe'

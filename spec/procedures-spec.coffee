@@ -137,6 +137,7 @@ describe "OpenEdge procedures grammer", ->
         it "tokenizes include references", ->
             sample = "{include.i}"
             {tokens} = grammar.tokenizeLine(sample)
+
             expect(tokens[0].value).toEqual "{"
             expect(tokens[0].scopes).toEqual ["source.openedge", "string.interpolated.include.oe"]
             expect(tokens[1].value).toEqual "include.i"
@@ -147,8 +148,19 @@ describe "OpenEdge procedures grammer", ->
         it "tokenizes preprocessor variable reference", ->
             sample = "{&CONST}"
             {tokens} = grammar.tokenizeLine(sample)
+
             expect(tokens[0].value).toEqual sample
             expect(tokens[0].scopes).toEqual ["source.openedge", "constant.other.preprocessor.oe"]
+
+        it "parses basic &SCOPED-DEFINE statement", ->
+            {tokens} = grammar.tokenizeLine "&scoped-define TESTVAR 8"
+
+            expect(tokens[0].value).toEqual "&scoped-define"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.preprocessor.define.oe", "keyword.other.preprocessordefine.oe"]
+            expect(tokens[2].value).toEqual "TESTVAR"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.preprocessor.define.oe", "constant.other.preprocessor.oe"]
+            expect(tokens[4].value).toEqual "8"
+            expect(tokens[4].scopes).toEqual ["source.openedge", "meta.preprocessor.define.oe", "constant.numeric.oe"]
 
     describe "strings", ->
         delimsByScope =
@@ -335,14 +347,3 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[0][2].value).toEqual ":"
             expect(tokens[0][2].scopes).toEqual ["source.openedge", "keyword.other.doblock.oe"]
             expect(tokens[1][0].scopes).toEqual ["source.openedge"]
-
-    describe "preprocesser variables", ->
-        it "parses basic &SCOPED-DEFINE statement", ->
-            {tokens} = grammar.tokenizeLine "&scoped-define TESTVAR 8"
-
-            expect(tokens[0].value).toEqual "&scoped-define"
-            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.preprocessor.define.oe", "keyword.other.preprocessordefine.oe"]
-            expect(tokens[2].value).toEqual "TESTVAR"
-            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.preprocessor.define.oe", "constant.other.preprocessor.oe"]
-            expect(tokens[4].value).toEqual "8"
-            expect(tokens[4].scopes).toEqual ["source.openedge", "meta.preprocessor.define.oe", "constant.numeric.oe"]
