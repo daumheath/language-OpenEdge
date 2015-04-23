@@ -238,7 +238,7 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[1][1].value).toEqual "table.field"
             expect(tokens[1][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
             expect(tokens[1][3].value).toEqual "="
-            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "keyword.operator.math.oe"]
+            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "keyword.operator.comparison.oe"]
             expect(tokens[1][5].value).toEqual "1"
             expect(tokens[1][5].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "constant.numeric.oe"]
             expect(tokens[1][6].value).toEqual ":"
@@ -265,7 +265,7 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[1][1].value).toEqual "table.field"
             expect(tokens[1][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
             expect(tokens[1][3].value).toEqual "="
-            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "keyword.operator.math.oe"]
+            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "keyword.operator.comparison.oe"]
             expect(tokens[1][5].value).toEqual "1"
             expect(tokens[1][5].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "constant.numeric.oe"]
             expect(tokens[2][1].value).toEqual "each "
@@ -279,7 +279,7 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[3][1].value).toEqual "table2.field"
             expect(tokens[3][1].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
             expect(tokens[3][3].value).toEqual "="
-            expect(tokens[3][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "keyword.operator.math.oe"]
+            expect(tokens[3][3].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "keyword.operator.comparison.oe"]
             expect(tokens[3][5].value).toEqual "table.field"
             expect(tokens[3][5].scopes).toEqual ["source.openedge", "keyword.other.for.oe", "storage.name.table.field.oe"]
             expect(tokens[3][6].value).toEqual ":"
@@ -335,19 +335,6 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[0][2].value).toEqual ":"
             expect(tokens[0][2].scopes).toEqual ["source.openedge", "keyword.other.doblock.oe"]
             expect(tokens[1][0].scopes).toEqual ["source.openedge"]
-
-    describe "&ANALYZE-SUSPEND parsing", ->
-        it "parses appbuilder markup around function", ->
-            {tokens} = grammar.tokenizeLine "&ANALYZE-SUSPEND _UIB-CODE-BLOCK _FUNCTION testFunction fFrameWin"
-
-            expect(tokens[0].value).toEqual "&ANALYZE-SUSPEND"
-            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.analyze-suspend"]
-            expect(tokens[1].value).toEqual " _UIB-CODE-BLOCK _FUNCTION "
-            expect(tokens[1].scopes).toEqual ["source.openedge", "meta.analyze-suspend"]
-            expect(tokens[2].value).toEqual "testFunction"
-            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.analyze-suspend", "entity.name.function.oe"]
-            expect(tokens[3].value).toEqual " fFrameWin"
-            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.analyze-suspend"]
 
     describe "preprocesser variables", ->
         it "parses basic &SCOPED-DEFINE statement", ->

@@ -236,11 +236,15 @@
                 ]
             }
         ]
-    'mathOperators':
+    'operators':
         'patterns': [
             {
-                'match': '(?<=\\s)[=+\\*\\/-](?=\\s)'
+                'match': '(?<=\\s)[+\\*\\/-](?=\\s)'
                 'name': 'keyword.operator.math.oe'
+            }
+            {
+                'match': '(([<>=])\\1?|(?:ne|eq|lt|gt))'
+                'name': 'keyword.operator.comparison.oe'
             }
         ]
     'parameterPatterns':
@@ -252,7 +256,7 @@
             { 'include': '#preProcVar' }
             { 'include': '#oeFunctions' }
             { 'include': '#ifStatements' }
-            { 'include': '#mathOperators' }
+            { 'include': '#operators' }
             { 'include': '#functionsMethods' }
             {
                 'match': '(?i:input-output|input|output)'
