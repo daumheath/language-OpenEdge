@@ -46,10 +46,10 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[1][0].scopes).toEqual ["source.openedge", "keyword.other.message.oe"]
             expect(tokens[1][1].value).toEqual "vChoice"
             expect(tokens[1][1].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "variable.other.oe"]
-            expect(tokens[1][2].value).toEqual " as "
-            expect(tokens[1][2].scopes).toEqual ["source.openedge", "keyword.other.message.oe"]
-            expect(tokens[1][3].value).toEqual "logical"
-            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "storage.type.oe"]
+            expect(tokens[1][3].value).toEqual "as"
+            expect(tokens[1][3].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "keyword.other.oe"]
+            expect(tokens[1][5].value).toEqual "logical"
+            expect(tokens[1][5].scopes).toEqual ["source.openedge", "keyword.other.message.oe", "storage.type.oe"]
 
     describe "language constants", ->
         it "tokenizes language constants", ->
@@ -193,45 +193,43 @@ describe "OpenEdge procedures grammer", ->
 
     describe "define statements", ->
         it "parses single line define variable with no modifiers", ->
-            lineOfText = "define variable test as character no-undo."
+            lineOfText = "DEFINE VARIABLE test AS CHARACTER NO-UNDO."
             {tokens} = grammar.tokenizeLine(lineOfText)
 
-            expect(tokens[0].value).toEqual "define "
-            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
-            expect(tokens[1].value).toEqual "variable "
-            expect(tokens[1].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
-            expect(tokens[2].value).toEqual "test"
-            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe", "variable.other.oe"]
-            expect(tokens[3].value).toEqual " as "
-            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
-            expect(tokens[4].value).toEqual "character"
-            expect(tokens[4].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe", "storage.type.oe"]
-            expect(tokens[5].value).toEqual " no-undo"
-            expect(tokens[5].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
-            expect(tokens[6].value).toEqual "."
-            expect(tokens[6].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
+            expect(tokens[0].value).toEqual "DEFINE"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[2].value).toEqual "VARIABLE"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[4].value).toEqual "test"
+            expect(tokens[4].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[6].value).toEqual "AS"
+            expect(tokens[6].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[8].value).toEqual "CHARACTER"
+            expect(tokens[8].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.type.oe"]
+            expect(tokens[10].value).toEqual "NO-UNDO"
+            expect(tokens[10].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[11].value).toEqual "."
+            expect(tokens[11].scopes).toEqual ["source.openedge", "meta.define.oe"]
 
         it "parses single line define variable with modifiers", ->
-            lineOfText = "define public static variable test as log no-undo."
+            lineOfText = "def public static var test as log no-undo."
             {tokens} = grammar.tokenizeLine(lineOfText)
 
-            expect(tokens[0].value).toEqual "define "
-            expect(tokens[1].value).toEqual "public"
-            expect(tokens[1].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe", "storage.modifier.oe"]
-            expect(tokens[3].value).toEqual "static"
-            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe", "storage.modifier.oe"]
-            expect(tokens[4].value).toEqual " variable "
-            expect(tokens[4].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
+            expect(tokens[0].value).toEqual "def"
+            expect(tokens[2].value).toEqual "public static "
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.modifier.oe"]
+            expect(tokens[3].value).toEqual "var"
+            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
             expect(tokens[5].value).toEqual "test"
-            expect(tokens[5].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe", "variable.other.oe"]
-            expect(tokens[6].value).toEqual " as "
-            expect(tokens[6].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
-            expect(tokens[7].value).toEqual "log"
-            expect(tokens[7].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe", "storage.type.oe"]
-            expect(tokens[8].value).toEqual " no-undo"
-            expect(tokens[8].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
-            expect(tokens[9].value).toEqual "."
-            expect(tokens[9].scopes).toEqual ["source.openedge", "meta.keyword.other.define.oe"]
+            expect(tokens[5].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[7].value).toEqual "as"
+            expect(tokens[7].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[9].value).toEqual "log"
+            expect(tokens[9].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.type.oe"]
+            expect(tokens[11].value).toEqual "no-undo"
+            expect(tokens[11].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[12].value).toEqual "."
+            expect(tokens[12].scopes).toEqual ["source.openedge", "meta.define.oe"]
 
     describe "FOR statement", ->
         it "parses basic FOR statement", ->

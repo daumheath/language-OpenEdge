@@ -142,34 +142,42 @@
         ]
     'defineStatements':
         'patterns': [
-            {
-                'begin': '^\\s*(?i:(def(?:ine)))\\s*'
+            { #variable
+                'begin': '^\\s*(?i:def(?:ine)?)(?=[^\\w-].*(?i:var(iable)?))'
+                'beginCaptures':
+                    '0':
+                        'name': 'keyword.other.define.oe'
                 'end': '\\.\\s'
-                'name': 'meta.keyword.other.define.oe'
+                'name': 'meta.define.oe'
                 'patterns': [
                     {
-                        'include': '#strings'
-                    }
-                    {
-                        'include': '#numbers'
-                    }
-                    {
-                        'include': '#modifiers'
-                    }
-                    {
-                        'include': '#oeConstants'
+                        'match': '(?i:((?:static\\s+|public\\s+|private\\s+|protected\\s+|new\\s+|global\\s+|shared\\s+)*)(var(?:iable)?))'
+                        'captures':
+                            '1':
+                                'name': 'storage.modifier.oe'
+                            '2':
+                                'name': 'keyword.other.oe'
                     }
                     { 'include': '#varNameAndType'}
+                    {
+                        'match': '(?<=[^\\w-])(?i:no-undo|init(?:ial)?)(?=[^\\w-])'
+                        'name': 'keyword.other.define.oe'
+                    }
+                    { 'include': '#strings' }
+                    { 'include': '#numbers' }
+                    { 'include': '#oeConstants' }
                 ]
             }
         ]
     'varNameAndType':
         'patterns': [
             {
-                'match': '\\b([\\w\\d_\-]*)\\s+(?i:(as))\\s+([\\w\\d_\\-]*(?:\\.\\w+)*)'
+                'match': '\\b([\\w\\d_-]*)\\s+(?i:(as))\\s+([\\w\\d_-]*(?:\\.\\w+)*)'
                 'captures':
                     '1':
                         'name': 'variable.other.oe'
+                    '2':
+                        'name': 'keyword.other.oe'
                     '3':
                         'name': 'storage.type.oe'
             }
