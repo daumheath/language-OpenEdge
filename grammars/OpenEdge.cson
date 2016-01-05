@@ -169,6 +169,59 @@
                     { 'include': '#oeConstants' }
                 ]
             }
+            { #parameter
+                'begin': '^\\s*(?i:def(?:ine)?)([^\\w-].*(?i:(param(eter)?)))'
+                'beginCaptures':
+                    '0':
+                        'name': 'keyword.other.define.oe'
+                'end': '\\.\\s'
+                'name': 'meta.define.oe'
+                'patterns': [
+                    { #variable
+                        'match': '\\b([\\w\\d_-]+)\\s+(?i:(as(?:\\s+(?:handle\\s+to|class))?|like))\\s+([\\w\\d_-]+(?:\\.\\w+)*)(?i:(?:\\s+(extent)(\\s+\\d+)?)?)'
+                        'captures':
+                            '1':
+                                'name': 'variable.other.oe'
+                            '2':
+                                'name': 'keyword.other.oe'
+                            '3':
+                                'name': 'storage.type.oe'
+                            '4':
+                                'name': 'keyword.other.oe'
+                            '5':
+                                'name': 'constant.numeric.oe'
+                    }
+                    { #buffer
+                        'match': '\\b(?i:(buffer))\\s+([\\w\\d_-]+)\\s+(?i:(for(?:\\stemp-table)?))\\s+([\\w\\d_-]+(?:\\.\\w+)*)'
+                        'captures':
+                            '1':
+                                'name': 'keyword.other.oe'
+                            '2':
+                                'name': 'variable.other.oe'
+                            '3':
+                                'name': 'keyword.other.oe'
+                            '4':
+                                'name': 'storage.type.oe'
+                    }
+                    { #table
+                        'match': '\\b(?i:(table\\s+for|table-handle|dataset\\s+for|dataset-handle))\\s+([\\w\\d_-]+)(?i:(\\sappend|\\sbind|\\sby-value)*)'
+                        'captures':
+                            '1':
+                                'name': 'keyword.other.oe'
+                            '2':
+                                'name': 'variable.other.oe'
+                            '3':
+                                'name': 'keyword.other.oe'
+                    }
+                    {
+                        'match': '(?<=[^\\w-])(?i:no-undo|init(?:ial)?|not|case-sensitive|format|decimals|column-label|label|preselect)(?=[^\\w-])'
+                        'name': 'keyword.other.define.oe'
+                    }
+                    { 'include': '#strings' }
+                    { 'include': '#numbers' }
+                    { 'include': '#oeConstants' }
+                ]
+            }
             { #buffers
                 'begin': '^\\s*(?i:def(?:ine)?)(?=[^\\w-].*(?i:buffer))'
                 'beginCaptures':
@@ -255,7 +308,7 @@
                     '4':
                         'name': 'keyword.other.oe'
                     '5':
-                        'name': 'contant.numeric.oe'
+                        'name': 'constant.numeric.oe'
             }
         ]
     'doStatement':
