@@ -168,6 +168,46 @@
                     { 'include': '#oeConstants' }
                 ]
             }
+            { #buffers
+                'begin': '^\\s*(?i:def(?:ine)?)(?=[^\\w-].*(?i:buffer))'
+                'beginCaptures':
+                    '0':
+                        'name': 'keyword.other.define.oe'
+                'end': '\\.\\s'
+                'name': 'meta.define.oe'
+                'patterns': [
+                    { #format the buffer modifiers
+                        'match': '(?i:((?:static\\s+|private\\s+|protected\\s+|new\\s+|shared\\s+)*)(buffer))'
+                        'captures':
+                            '1':
+                                'name': 'storage.modifier.oe'
+                            '2':
+                                'name': 'keyword.other.oe'
+                    }
+                    { #format the buffer name and table
+                        'match': '\\b([\\w\\d_-]+)\\s+(?i:(for(?:\\s+temp-table)?))\\s+([\\w\\d_-]+)'
+                        'captures':
+                            '1':
+                                'name': 'variable.other.oe'
+                            '2':
+                                'name': 'keyword.other.oe'
+                            '3':
+                                'name': 'storage.name.table.oe'
+                    }
+                    {
+                        'match': '\\b(?i:(preselect))'
+                        'name': 'keyword.other.oe'
+                    }
+                    {
+                        'match': '\\b(?i:(label|namespace-uri|namespace-prefix|xml-node-name)(\\s+[\\w\\d_-]+)?)'
+                        'captures':
+                            '1':
+                                'name': 'keyword.other.oe'
+                            '2':
+                                'name': 'variable.other.oe'
+                    }
+                ]
+            }
         ]
     'varNameAndType':
         'patterns': [

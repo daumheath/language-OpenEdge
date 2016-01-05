@@ -231,6 +231,76 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[12].value).toEqual "."
             expect(tokens[12].scopes).toEqual ["source.openedge", "meta.define.oe"]
 
+        it "parses single line define buffer", ->
+            lineOfText = "def buffer btest for test."
+            {tokens} = grammar.tokenizeLine(lineOfText)
+
+            expect(tokens[0].value).toEqual "def"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[2].value).toEqual "buffer"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[4].value).toEqual "btest"
+            expect(tokens[4].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[6].value).toEqual "for"
+            expect(tokens[6].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[8].value).toEqual "test"
+            expect(tokens[8].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.name.table.oe"]
+
+        it "parses define buffer statement with scope modifiers", ->
+            lineOfText = "DEFINE PROTECTED static BUFFER btest FOR test."
+            {tokens} = grammar.tokenizeLine(lineOfText)
+
+            expect(tokens[0].value).toEqual "DEFINE"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[2].value).toEqual "PROTECTED static "
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.modifier.oe"]
+            expect(tokens[3].value).toEqual "BUFFER"
+            expect(tokens[3].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[5].value).toEqual "btest"
+            expect(tokens[5].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[7].value).toEqual "FOR"
+            expect(tokens[7].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[9].value).toEqual "test"
+            expect(tokens[9].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.name.table.oe"]
+
+        it "parses a define buffer statement with all the keyword options filled in on multiple lines", ->
+            tokens = grammar.tokenizeLines """DEFINE NEW SHARED STATIC BUFFER btest FOR TEMP-TABLE test PRESELECT
+                                                  LABEL nottest
+                                                  NAMESPACE-URI test-ns
+                                                  namespace-prefix ns-prefix
+                                                  XML-NODE-NAME testNodeName."""
+
+            expect(tokens[0][0].value).toEqual "DEFINE"
+            expect(tokens[0][0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[0][2].value).toEqual "NEW SHARED STATIC "
+            expect(tokens[0][2].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.modifier.oe"]
+            expect(tokens[0][3].value).toEqual "BUFFER"
+            expect(tokens[0][3].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[0][5].value).toEqual "btest"
+            expect(tokens[0][5].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[0][7].value).toEqual "FOR TEMP-TABLE"
+            expect(tokens[0][7].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[0][9].value).toEqual "test"
+            expect(tokens[0][9].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.name.table.oe"]
+            expect(tokens[0][11].value).toEqual "PRESELECT"
+            expect(tokens[0][11].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[1][0].value.trim()).toEqual "LABEL"
+            expect(tokens[1][0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[1][1].value).toEqual " nottest"
+            expect(tokens[1][1].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[2][0].value.trim()).toEqual "NAMESPACE-URI"
+            expect(tokens[2][0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[2][1].value).toEqual " test-ns"
+            expect(tokens[2][1].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[3][0].value.trim()).toEqual "namespace-prefix"
+            expect(tokens[3][0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[3][1].value).toEqual " ns-prefix"
+            expect(tokens[3][1].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[4][0].value.trim()).toEqual "XML-NODE-NAME"
+            expect(tokens[4][0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[4][1].value).toEqual " testNodeName"
+            expect(tokens[4][1].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+
     describe "FOR statement", ->
         it "parses basic FOR statement", ->
             tokens = grammar.tokenizeLines """for each table
