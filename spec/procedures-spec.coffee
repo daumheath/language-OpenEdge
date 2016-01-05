@@ -216,6 +216,7 @@ describe "OpenEdge procedures grammer", ->
             {tokens} = grammar.tokenizeLine(lineOfText)
 
             expect(tokens[0].value).toEqual "def"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
             expect(tokens[2].value).toEqual "public static "
             expect(tokens[2].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.modifier.oe"]
             expect(tokens[3].value).toEqual "var"
@@ -230,6 +231,88 @@ describe "OpenEdge procedures grammer", ->
             expect(tokens[11].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
             expect(tokens[12].value).toEqual "."
             expect(tokens[12].scopes).toEqual ["source.openedge", "meta.define.oe"]
+
+        it "parses a define variable for a class", ->
+            lineOfText = 'define variable test as class common.strings no-undo.'
+            {tokens} = grammar.tokenizeLine(lineOfText)
+
+            expect(tokens[0].value).toEqual "define"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[2].value).toEqual "variable"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[4].value).toEqual "test"
+            expect(tokens[4].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[6].value).toEqual "as class"
+            expect(tokens[6].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[8].value).toEqual "common.strings"
+            expect(tokens[8].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.type.oe"]
+            expect(tokens[10].value).toEqual "no-undo"
+            expect(tokens[10].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[11].value).toEqual "."
+            expect(tokens[11].scopes).toEqual ["source.openedge", "meta.define.oe"]
+
+        it "parses a define variable when like a db field", ->
+            lineOfText = 'define variable test like person.first_name no-undo.'
+            {tokens} = grammar.tokenizeLine(lineOfText)
+
+            expect(tokens[0].value).toEqual "define"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[2].value).toEqual "variable"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[4].value).toEqual "test"
+            expect(tokens[4].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[6].value).toEqual "like"
+            expect(tokens[6].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[8].value).toEqual "person.first_name"
+            expect(tokens[8].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.type.oe"]
+            expect(tokens[10].value).toEqual "no-undo"
+            expect(tokens[10].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[11].value).toEqual "."
+            expect(tokens[11].scopes).toEqual ["source.openedge", "meta.define.oe"]
+
+        it "parses a define variable as array", ->
+            lineOfText = 'define variable test as int extent no-undo.'
+            {tokens} = grammar.tokenizeLine(lineOfText)
+
+            expect(tokens[0].value).toEqual "define"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[2].value).toEqual "variable"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[4].value).toEqual "test"
+            expect(tokens[4].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[6].value).toEqual "as"
+            expect(tokens[6].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[8].value).toEqual "int"
+            expect(tokens[8].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.type.oe"]
+            expect(tokens[10].value).toEqual "extent"
+            expect(tokens[10].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[12].value).toEqual "no-undo"
+            expect(tokens[12].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[13].value).toEqual "."
+            expect(tokens[13].scopes).toEqual ["source.openedge", "meta.define.oe"]
+
+        it "parses a define variable a fixed array", ->
+            lineOfText = 'define variable test as int extent 10 no-undo.'
+            {tokens} = grammar.tokenizeLine(lineOfText)
+
+            expect(tokens[0].value).toEqual "define"
+            expect(tokens[0].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[2].value).toEqual "variable"
+            expect(tokens[2].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[4].value).toEqual "test"
+            expect(tokens[4].scopes).toEqual ["source.openedge", "meta.define.oe", "variable.other.oe"]
+            expect(tokens[6].value).toEqual "as"
+            expect(tokens[6].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[8].value).toEqual "int"
+            expect(tokens[8].scopes).toEqual ["source.openedge", "meta.define.oe", "storage.type.oe"]
+            expect(tokens[10].value).toEqual "extent"
+            expect(tokens[10].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.oe"]
+            expect(tokens[11].value).toEqual ' 10'
+            expect(tokens[11].scopes).toEqual ["source.openedge", "meta.define.oe", "contant.numeric.oe"]
+            expect(tokens[13].value).toEqual "no-undo"
+            expect(tokens[13].scopes).toEqual ["source.openedge", "meta.define.oe", "keyword.other.define.oe"]
+            expect(tokens[14].value).toEqual "."
+            expect(tokens[14].scopes).toEqual ["source.openedge", "meta.define.oe"]
 
         it "parses single line define buffer", ->
             lineOfText = "def buffer btest for test."

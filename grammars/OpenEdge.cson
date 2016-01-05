@@ -160,9 +160,10 @@
                     }
                     { 'include': '#varNameAndType'}
                     {
-                        'match': '(?<=[^\\w-])(?i:no-undo|init(?:ial)?)(?=[^\\w-])'
+                        'match': '(?<=[^\\w-])(?i:no-undo|init(?:ial)?|drop-target|(?:not\\s)?case-sensitive|bgcolor|column-label|context-help-id|dcolor|decimals|font|fgcolor|format|label|mouse-pointer|pfcolor)(?=[^\\w-])'
                         'name': 'keyword.other.define.oe'
                     }
+                    { 'include': '#viewasphrase' }
                     { 'include': '#strings' }
                     { 'include': '#numbers' }
                     { 'include': '#oeConstants' }
@@ -209,10 +210,41 @@
                 ]
             }
         ]
+    'viewasphrase':
+        'patterns': [
+            { #common keywords
+                'match': '(?<=\\s)(?i:(view-as|list-items|sort|inner-lines|tooltip|size|max-chars|size|by|scrollbar-horizontal|scrollbar-vertical|horizontal|vertical|text|toggle-box))\\s'
+                'name': 'keyword.other.oe'
+            }
+            { # combo-box specific keywords
+                'match': '(?<=\\s)(?i:combo-box|simple|drop-down|drop-down-list|list-item-pairs|auto-completion|unique-match)\\s'
+                'name': 'keyword.other.oe'
+            }
+            { # editor specific keywords
+                'match': '(?<=\\s)(?i:(editor|size|by|inner-chars|large|buffer-chars|buffer-lines|no-box|no-word-wrap))\\s'
+                'name': 'keyword.other.oe'
+            }
+            { #fill-in specific keywords
+                'match': '(?<=\\s)(?i:fill-in|native)\\s'
+                'name': 'keyword.other.oe'
+            }
+            { #radio-set specific keywords
+                'match': '(?<=\\s)(?i:radio-set|expand|radio-buttons)\\s'
+                'name': 'keyword.other.oe'
+            }
+            { #selection-list specific keywords
+                'match': '(?<=\\s)(?i:selection-list|single|multiple|no-drag)\\s'
+                'name': 'keyword.other.oe'
+            }
+            { #slider specific keywords
+                'match': '(?<=\\s)(?i:slider|max-value|no-current-value|large-to-small|tic-marks|none|top|bottom|left|right|both|frequency)\\s'
+                'name': 'keyword.other.oe'
+            }
+        ]
     'varNameAndType':
         'patterns': [
             {
-                'match': '\\b([\\w\\d_-]*)\\s+(?i:(as))\\s+([\\w\\d_-]*(?:\\.\\w+)*)'
+                'match': '\\b([\\w\\d_-]*)\\s+(?i:(as(?:\\sclass)?|like))\\s+([\\w\\d_-]*(?:\\.\\w+)*)(?i:(?:\\s+(extent)(\\s+\\d+)?)?)'
                 'captures':
                     '1':
                         'name': 'variable.other.oe'
@@ -220,6 +252,10 @@
                         'name': 'keyword.other.oe'
                     '3':
                         'name': 'storage.type.oe'
+                    '4':
+                        'name': 'keyword.other.oe'
+                    '5':
+                        'name': 'contant.numeric.oe'
             }
         ]
     'doStatement':
