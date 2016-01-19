@@ -1,0 +1,4 @@
+'.source.openedge':
+    'message box':
+        'prefix': 'msg'
+        'body': 'MESSAGE ${1:text} VIEW-AS ALERT-BOX.'
