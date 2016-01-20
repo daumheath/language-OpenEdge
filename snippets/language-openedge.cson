@@ -1,4 +1,7 @@
 '.source.openedge':
-    'message box':
+    'Message Box':
         'prefix': 'msg'
         'body': 'MESSAGE ${1:text} VIEW-AS ALERT-BOX.'
+    'Method Block':
+        'prefix': 'pmethod'
+        'body': 'METHOD PUBLIC ${1:VOID} ${2:name}(${3:params}):\n\t$4\nEND METHOD.'
