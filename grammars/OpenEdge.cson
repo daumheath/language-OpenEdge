@@ -9,7 +9,7 @@
 'patterns': [
     { 'include': '#codeBlock' }
     {
-        'begin': '^\\s*(?i:(class\\s+(?:public\\s+|private\\s+|protected\\s+|abstract\\s+|static\\s+)*)(\\w[\\w\\d-]*)(?:\\s+(inherits|implements)\\s+(\\w[\\w\\d-]*))?)'
+        'begin': '^\\s*(?i:(class\\s+(?:public\\s+|private\\s+|protected\\s+|abstract\\s+|static\\s+)*)(\\w[\\w\\d-]*(?:\\.[\\w\\d-]*)*)(?:\\s+(inherits|implements)\\s+(\\w[\\w\\d-]*(?:\\.[\\w\\d-]*)*))?)'
         'beginCaptures':
             '1':
                 'name': 'keyword.other.oe'
