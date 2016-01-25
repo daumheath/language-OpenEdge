@@ -27,7 +27,21 @@
     'codeBlock':
         'patterns': [
             {
-                #'include': '#ifStatements'
+                'match': '\\b(?i:end)\\b[^\.]*\.'
+                'name': 'keyword.other.oe'
+            }
+            { 'include': '#ifStatements' }
+            {
+                'match': '\\b(?i:else)'
+                'name': 'keyword.other.oe'
+            }
+            {
+                'begin': '\\b(?i:delete)\\s+(?i:alias|procedure|object|widget|widget-pool)?'
+                'beginCaptures':
+                    '0':
+                        'name': 'keyword.other.oe'
+                'end': '\\.$'
+                'name': 'meta.delete.oe'
             }
             { 'include': '#oeFunctions' }
             { 'include': '#functionsMethods' }
@@ -99,10 +113,12 @@
     'functionsMethods':
         'patterns': [
             {
-                'begin': '[\\w\\d-]+\\s*\\('
+                'begin': '\\b(?:([\\.\\w\\d-]+):)?[\\w\\d-]+\\('
                 'beginCaptures':
                     '0':
                         'name': 'entity.name.function.oe'
+                    '1':
+                        'name': 'entity.name.type.class.oe'
                 'end': '\\)'
                 'endCaptures':
                     '0':
@@ -331,25 +347,6 @@
                 'beginCaptures':
                     '0':
                         'name': 'keyword.other.if.oe'
-                'end': '\\b(?i:else)\\b'
-                'endCaptures':
-                    '0':
-                        'name': 'keyword.other.else.oe'
-                'patterns': [
-                    {
-                        'include': '#parameterPatterns'
-                    }
-                    {
-                        'match': '\\b(?i:then)\\b'
-                        'name': 'keyword.other.then.oe'
-                    }
-                ]
-            }
-            {
-                'begin': '\\b(?i:if)\\b'
-                'beginCaptures':
-                    '0':
-                        'name': 'keyword.other.if.oe'
                 'end': '\\b(?i:then)\\b'
                 'endCaptures':
                     '0':
@@ -357,6 +354,10 @@
                 'patterns': [
                     {
                         'include': '#parameterPatterns'
+                    }
+                    {
+                        'match': '\\b(?i:and|or|not)\\b'
+                        'name': 'keyword.operator.oe'
                     }
                 ]
             }
@@ -432,6 +433,10 @@
             {
                 'match': '(([<>=])\\1?|(?:ne|eq|lt|gt))'
                 'name': 'keyword.operator.comparison.oe'
+            }
+            {
+                'match': '\\b(?i:and|or|not)\\b'
+                'name': 'keyword.operator.logical.oe'
             }
         ]
     'parameterPatterns':
